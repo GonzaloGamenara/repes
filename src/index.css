@@ -27,7 +27,10 @@
 }
 
 /* Base styles for iOS native feel */
-html, body {
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
   background-color: #020503; /* Obsidian Deep Forest */
   color: #f8fafc;
   overscroll-behavior-y: contain; /* Prevents elastic scroll bounce in standalone PWA */

@@ -116,40 +116,40 @@ export const SetBottomSheet: React.FC = () => {
             </div>
             
             {/* Rapid incrementers grid */}
-            <div className="grid grid-cols-6 gap-2">
+            <div className="grid grid-cols-6 gap-1 sm:gap-1.5">
               <button 
                 onClick={() => setWeight(Math.max(0, weight - 5))}
-                className="py-2.5 rounded-xl bg-white/5 border border-white/5 text-xs font-bold text-slate-300 active:scale-90 transition-all font-mono"
+                className="py-2 px-0.5 text-center rounded-lg bg-white/5 border border-white/5 text-[10px] sm:text-xs font-bold text-slate-300 active:scale-90 transition-all font-mono"
               >
                 -5
               </button>
               <button 
                 onClick={() => setWeight(Math.max(0, weight - 2.5))}
-                className="py-2.5 rounded-xl bg-white/5 border border-white/5 text-xs font-bold text-slate-300 active:scale-90 transition-all font-mono"
+                className="py-2 px-0.5 text-center rounded-lg bg-white/5 border border-white/5 text-[10px] sm:text-xs font-bold text-slate-300 active:scale-90 transition-all font-mono"
               >
                 -2.5
               </button>
               <button 
                 onClick={() => setWeight(Math.max(0, weight - 1))}
-                className="py-2.5 rounded-xl bg-white/5 border border-white/5 text-xs font-bold text-slate-300 active:scale-90 transition-all font-mono"
+                className="py-2 px-0.5 text-center rounded-lg bg-white/5 border border-white/5 text-[10px] sm:text-xs font-bold text-slate-300 active:scale-90 transition-all font-mono"
               >
                 -1
               </button>
               <button 
                 onClick={() => setWeight(weight + 1)}
-                className="py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs font-bold text-emerald-400 active:scale-90 transition-all font-mono"
+                className="py-2 px-0.5 text-center rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-[10px] sm:text-xs font-bold text-emerald-400 active:scale-90 transition-all font-mono"
               >
                 +1
               </button>
               <button 
                 onClick={() => setWeight(weight + 2.5)}
-                className="py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs font-bold text-emerald-400 active:scale-90 transition-all font-mono"
+                className="py-2 px-0.5 text-center rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-[10px] sm:text-xs font-bold text-emerald-400 active:scale-90 transition-all font-mono"
               >
                 +2.5
               </button>
               <button 
                 onClick={() => setWeight(weight + 5)}
-                className="py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs font-bold text-emerald-400 active:scale-90 transition-all font-mono"
+                className="py-2 px-0.5 text-center rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-[10px] sm:text-xs font-bold text-emerald-400 active:scale-90 transition-all font-mono"
               >
                 +5
               </button>

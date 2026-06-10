@@ -12,7 +12,7 @@ function AppContent() {
   const { activeView, setActiveView, activeSession, streakDays, user } = useWorkout();
 
   return (
-    <div className="relative min-h-dvh bg-[#030704] text-slate-100 flex flex-col font-sans selection:bg-emerald-500/30 selection:text-emerald-200">
+    <div className="relative h-dvh max-h-dvh bg-[#030704] text-slate-100 flex flex-col font-sans selection:bg-emerald-500/30 selection:text-emerald-200 overflow-hidden">
       
       {/* Background Decorator Glows */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
@@ -21,35 +21,37 @@ function AppContent() {
       </div>
 
       {/* Sticky iOS Header with Safe Area Space */}
-      <header className="sticky top-0 z-30 w-full border-b border-white/5 backdrop-blur-md bg-[#020503]/50 pt-safe px-4 pb-3 flex items-center justify-between">
-        <div className="flex items-center gap-2 mt-2">
-          <div className="relative w-8 h-8 rounded-lg bg-gradient-to-tr from-emerald-500 to-teal-400 p-[1px] flex items-center justify-center shadow-lg shadow-emerald-500/10">
-            <span className="font-mono font-black text-xs text-[#020503]">rp</span>
-          </div>
-          <span className="font-display font-extrabold text-base tracking-tight text-white">
-            repes
-          </span>
-        </div>
-        
-        {/* Streak Flame Counter */}
-        {user && (
-          <div className="mt-2">
-            <div 
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-full border transition-all duration-300 ${
-                streakDays > 0 
-                  ? 'bg-amber-500/10 border-amber-500/20 text-amber-400 font-extrabold' 
-                  : 'bg-white/5 border-white/5 text-slate-500 font-medium'
-              }`}
-            >
-              <span className={`text-xs ${streakDays > 0 ? 'animate-bounce' : 'grayscale filter'}`} style={{ animationDuration: '2.5s' }}>🔥</span>
-              <span className="text-xs font-black font-mono">{streakDays}</span>
+      {activeView !== 'auth' && (
+        <header className="sticky top-0 z-30 w-full border-b border-white/5 backdrop-blur-md bg-[#020503]/50 pt-safe px-4 pb-3 flex items-center justify-between">
+          <div className="flex items-center gap-2 mt-2">
+            <div className="relative w-8 h-8 rounded-lg bg-gradient-to-tr from-emerald-500 to-teal-400 p-[1px] flex items-center justify-center shadow-lg shadow-emerald-500/10">
+              <span className="font-mono font-black text-xs text-[#020503]">rp</span>
             </div>
+            <span className="font-display font-extrabold text-base tracking-tight text-white">
+              repes
+            </span>
           </div>
-        )}
-      </header>
+          
+          {/* Streak Flame Counter */}
+          {user && (
+            <div className="mt-2">
+              <div 
+                className={`flex items-center gap-1.5 px-3 py-1 rounded-full border transition-all duration-300 ${
+                  streakDays > 0 
+                    ? 'bg-amber-500/10 border-amber-500/20 text-amber-400 font-extrabold' 
+                    : 'bg-white/5 border-white/5 text-slate-500 font-medium'
+                }`}
+              >
+                <span className={`text-xs ${streakDays > 0 ? 'animate-bounce' : 'grayscale filter'}`} style={{ animationDuration: '2.5s' }}>🔥</span>
+                <span className="text-xs font-black font-mono">{streakDays}</span>
+              </div>
+            </div>
+          )}
+        </header>
+      )}
 
       {/* Main View Router */}
-      <main className="flex-1 flex flex-col relative z-10 pb-28 animate-slide-up-fade">
+      <main className="flex-1 overflow-y-auto min-h-0 relative z-10 pb-28 w-full overflow-x-hidden animate-slide-up-fade">
         {activeView === 'auth' && <LoginView />}
         {activeView === 'planner' && <PlannerView />}
         {activeView === 'routines' && <RoutinesView />}

@@ -5,6 +5,7 @@ import Button from '../../components/Button';
 export const LoginView: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -21,6 +22,9 @@ export const LoginView: React.FC = () => {
         const { error } = await supabase.auth.signUp({
           email: email.trim(),
           password: password,
+          options: {
+            emailRedirectTo: window.location.origin,
+          },
         });
         if (error) throw error;
         setSuccessMsg('¡Registro exitoso! Revisa tu email para verificar la cuenta o inicia sesión.');
@@ -39,62 +43,62 @@ export const LoginView: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col justify-center px-4 py-12 relative min-h-dvh">
+    <div className="flex-1 flex flex-col justify-center px-4 py-4 sm:py-10 relative">
       
       {/* Background Decorative Glowing Elements */}
       <div className="absolute top-[15%] left-[-15%] w-[350px] h-[350px] rounded-full bg-emerald-950/20 blur-[100px] pointer-events-none animate-pulse-slow"></div>
       <div className="absolute bottom-[15%] right-[-15%] w-[350px] h-[350px] rounded-full bg-teal-950/15 blur-[100px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '-4s' }}></div>
  
-      <div className="max-w-md w-full mx-auto relative z-10 flex flex-col gap-8 animate-scale-in">
+      <div className="max-w-md w-full mx-auto relative z-10 flex flex-col gap-4 sm:gap-6 animate-scale-in">
         
         {/* App Logo & Title */}
-        <div className="text-center flex flex-col items-center gap-4">
-          <div className="relative flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 p-[1.5px] shadow-2xl shadow-emerald-950/50">
+        <div className="text-center flex flex-col items-center gap-3 sm:gap-4">
+          <div className="relative flex items-center justify-center w-14 h-14 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 p-[1.5px] shadow-2xl shadow-emerald-950/50">
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 opacity-40 blur-lg"></div>
-            <div className="w-full h-full rounded-[14px] bg-[#020503] flex items-center justify-center z-10 text-3xl font-black text-emerald-400 font-mono tracking-tighter">
+            <div className="w-full h-full rounded-[14px] bg-[#020503] flex items-center justify-center z-10 text-2xl sm:text-3xl font-black text-emerald-400 font-mono tracking-tighter">
               rp
             </div>
           </div>
-          <div className="flex flex-col gap-1.5">
-            <h1 className="text-4xl font-black tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
+          <div className="flex flex-col gap-1">
+            <h1 className="text-3xl sm:text-4xl font-black tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
               repes
             </h1>
-            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">
+            <p className="text-[10px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider">
               Sobrecarga Progresiva Ágil
             </p>
           </div>
-          <p className="text-xs text-slate-400 font-medium max-w-xs leading-relaxed mt-1">
+          <p className="text-[11px] sm:text-xs text-slate-400 font-medium max-w-xs leading-relaxed mt-0.5">
             Reemplazá las notas de WhatsApp al entrenar y trackeá tus pesos en tiempo real con Supabase.
           </p>
         </div>
  
         {/* Login Card */}
-        <div className="bg-[#0b100c]/80 border border-white/10 rounded-[32px] p-7 shadow-2xl flex flex-col gap-6 backdrop-blur-md">
+        <div className="bg-[#0b100c]/80 border border-white/10 rounded-[24px] sm:rounded-[32px] p-5 sm:p-7 shadow-2xl flex flex-col gap-4 sm:gap-6 backdrop-blur-md">
           <div>
-            <h2 className="text-lg font-black text-white tracking-tight">
+            <h2 className="text-base sm:text-lg font-black text-white tracking-tight">
               {isSignUp ? 'Crear cuenta nueva' : 'Comenzar a entrenar'}
             </h2>
-            <p className="text-xs text-slate-400 mt-1 font-medium leading-normal">
+            <p className="text-[11px] sm:text-xs text-slate-400 mt-0.5 font-medium leading-normal">
               {isSignUp ? 'Registrate con tu email para persistir tus datos.' : 'Ingresá con tus credenciales de Supabase.'}
             </p>
           </div>
  
           {/* Feedback alerts */}
           {errorMsg && (
-            <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-xs font-semibold text-rose-400 text-center leading-relaxed animate-shake">
+            <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-[11px] sm:text-xs font-semibold text-rose-400 text-center leading-relaxed animate-shake">
               ⚠️ {errorMsg}
             </div>
           )}
           {successMsg && (
-            <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs font-semibold text-emerald-400 text-center leading-relaxed">
+            <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-[11px] sm:text-xs font-semibold text-emerald-400 text-center leading-relaxed">
               ✅ {successMsg}
             </div>
           )}
  
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4.5">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3.5 sm:gap-4.5">
             {/* Email field */}
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="email-input" className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">
+            <div className="flex flex-col gap-1">
+              <label htmlFor="email-input" className="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">
                 Correo Electrónico
               </label>
               <input
@@ -103,27 +107,46 @@ export const LoginView: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="ejemplo@gimnasio.com"
-                className="w-full bg-[#030603] border border-white/5 focus:border-emerald-500/50 rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:outline-none transition-all duration-300 font-semibold shadow-inner"
+                className="w-full bg-[#030603] border border-white/5 focus:border-emerald-500/50 rounded-xl px-4 py-2.5 sm:py-3.5 text-xs sm:text-sm text-white placeholder-slate-600 focus:outline-none transition-all duration-300 font-semibold shadow-inner"
                 required
                 style={{ touchAction: 'manipulation' }}
               />
             </div>
  
             {/* Password field */}
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="password-input" className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">
+            <div className="flex flex-col gap-1">
+              <label htmlFor="password-input" className="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">
                 Contraseña
               </label>
-              <input
-                id="password-input"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full bg-[#030603] border border-white/5 focus:border-emerald-500/50 rounded-xl px-4 py-3.5 text-sm text-white placeholder-slate-600 focus:outline-none transition-all duration-300 font-semibold shadow-inner"
-                required
-                style={{ touchAction: 'manipulation' }}
-              />
+              <div className="relative w-full">
+                <input
+                  id="password-input"
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full bg-[#030603] border border-white/5 focus:border-emerald-500/50 rounded-xl pl-4 pr-12 py-2.5 sm:py-3.5 text-xs sm:text-sm text-white placeholder-slate-600 focus:outline-none transition-all duration-300 font-semibold shadow-inner"
+                  required
+                  style={{ touchAction: 'manipulation' }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors duration-200 p-1"
+                  style={{ touchAction: 'manipulation' }}
+                >
+                  {showPassword ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  )}
+                </button>
+              </div>
             </div>
  
             <Button
@@ -131,7 +154,7 @@ export const LoginView: React.FC = () => {
               variant="primary"
               size="full"
               disabled={loading}
-              className="mt-3.5 py-4"
+              className="mt-2 sm:mt-3.5 py-3 sm:py-4"
             >
               {loading ? (
                 <span className="flex items-center gap-2">
@@ -150,14 +173,14 @@ export const LoginView: React.FC = () => {
           </form>
  
           {/* Toggle login mode */}
-          <div className="text-center mt-2">
+          <div className="text-center mt-1 sm:mt-2">
             <button
               onClick={() => {
                 setIsSignUp(!isSignUp);
                 setErrorMsg(null);
                 setSuccessMsg(null);
               }}
-              className="text-xs font-black text-emerald-400 hover:text-emerald-300 underline underline-offset-4 decoration-emerald-400/30 decoration-2 transition-colors duration-200"
+              className="text-[11px] sm:text-xs font-black text-emerald-400 hover:text-emerald-300 underline underline-offset-4 decoration-emerald-400/30 decoration-2 transition-colors duration-200"
               style={{ touchAction: 'manipulation' }}
             >
               {isSignUp ? '¿Ya tenés cuenta? Iniciar Sesión' : '¿No tenés cuenta? Registrarse'}
@@ -166,7 +189,7 @@ export const LoginView: React.FC = () => {
         </div>
  
         {/* Benefits banner */}
-        <div className="grid grid-cols-3 gap-3 text-center text-[10px] font-black uppercase tracking-wider text-slate-500 mt-2 select-none">
+        <div className="hidden sm:grid grid-cols-3 gap-3 text-center text-[10px] font-black uppercase tracking-wider text-slate-500 mt-2 select-none">
           <div className="flex flex-col gap-1.5 bg-emerald-950/5 border border-white/5 rounded-2xl p-3 shadow-md hover:border-emerald-500/10 transition-all duration-300">
             <span className="text-emerald-400 text-lg">⚡</span>
             <span>Ágil y Rápido</span>

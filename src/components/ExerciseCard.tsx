@@ -84,7 +84,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise }) => {
       </div>
 
       {/* Table-like header */}
-      <div className="grid grid-cols-12 gap-1 text-[9px] font-black text-slate-500 uppercase tracking-widest px-1">
+      <div className="grid grid-cols-12 gap-0.5 text-[9px] font-black text-slate-500 uppercase tracking-widest px-1">
         <div className="col-span-2 text-center">Serie</div>
         <div className="col-span-4 text-center">Anterior</div>
         <div className="col-span-4 text-center">Actual</div>
@@ -98,7 +98,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise }) => {
           return (
             <div 
               key={set.id}
-              className={`grid grid-cols-12 gap-1 items-center py-2 px-1 rounded-xl transition-all duration-300 border ${
+              className={`grid grid-cols-12 gap-0.5 items-center py-2 px-0.5 rounded-xl transition-all duration-300 border ${
                 set.isCompleted 
                   ? 'bg-emerald-950/10 border-emerald-500/20 shadow-[0_0_12px_rgba(16,185,129,0.02)]' 
                   : 'bg-white/[0.01] border-white/[0.03] hover:bg-white/[0.03]'
@@ -106,7 +106,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise }) => {
             >
               {/* Set Number */}
               <div className="col-span-2 text-center">
-                <span className={`inline-flex w-6 h-6 items-center justify-center rounded-lg text-xs font-mono font-bold ${
+                <span className={`inline-flex w-5.5 h-5.5 items-center justify-center rounded-lg text-[11px] font-mono font-bold ${
                   set.isCompleted ? 'bg-emerald-600/20 text-emerald-400' : 'bg-slate-800 text-slate-400'
                 }`}>
                   {set.number}
@@ -115,7 +115,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise }) => {
 
               {/* Previous weight & reps */}
               <div className="col-span-4 text-center">
-                <span className="text-xs font-mono font-semibold text-slate-400">
+                <span className="text-[11px] font-mono font-semibold text-slate-400 block truncate">
                   {set.prevWeight}kg x {set.prevReps}
                 </span>
               </div>
@@ -127,17 +127,17 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise }) => {
               >
                 {set.weight !== null && set.reps !== null ? (
                   <div className="flex flex-col items-center gap-0.5">
-                    <span className="text-xs font-mono font-bold text-white bg-slate-800/80 px-2 py-0.5 rounded-md border border-slate-700/50">
+                    <span className="text-[11px] font-mono font-bold text-white bg-slate-800/80 px-1 py-0.5 rounded border border-slate-700/50 block truncate max-w-full">
                       {set.weight}kg x {set.reps}
                     </span>
                     {overload && (
-                      <span className={`text-[9px] px-1.5 py-0.2 rounded-full border font-bold ${overload.color}`}>
+                      <span className={`text-[8px] px-1 py-0.2 rounded border font-bold ${overload.color} block truncate max-w-full`}>
                         {overload.text}
                       </span>
                     )}
                   </div>
                 ) : (
-                  <span className="text-xs font-bold text-emerald-400 hover:text-emerald-300 underline decoration-emerald-500/30 underline-offset-4 decoration-2">
+                  <span className="text-[11px] font-bold text-emerald-400 hover:text-emerald-300 underline decoration-emerald-500/30 underline-offset-4 decoration-2">
                     Registrar
                   </span>
                 )}
@@ -147,14 +147,14 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise }) => {
               <div className="col-span-2 flex justify-center">
                 <button
                   onClick={() => toggleSetCompleted(exercise.id, index)}
-                  className={`w-7 h-7 rounded-xl flex items-center justify-center border transition-all duration-300 active:scale-90 ${
+                  className={`w-6.5 h-6.5 rounded-lg flex items-center justify-center border transition-all duration-300 active:scale-90 ${
                     set.isCompleted
                       ? 'bg-emerald-500 border-emerald-400 text-[#020503] shadow-md shadow-emerald-500/20'
                       : 'bg-transparent border-slate-700 hover:border-emerald-500/40 text-transparent'
                   }`}
                   style={{ touchAction: 'manipulation' }}
                 >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3.5">
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </button>

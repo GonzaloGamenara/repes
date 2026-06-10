@@ -24,7 +24,7 @@ export const RestTimer: React.FC = () => {
   const isUrgent = restTimeRemaining <= 10;
 
   return (
-    <div className="fixed bottom-[calc(env(safe-area-inset-bottom)+16px)] left-4 right-4 z-40 animate-slide-up">
+    <div className="fixed bottom-[calc(env(safe-area-inset-bottom)+84px)] left-4 right-4 z-40 animate-slide-up">
       {/* Background glow */}
       <div className={`absolute inset-0 rounded-2xl blur-lg transition-all duration-300 opacity-60 pointer-events-none ${
         isUrgent ? 'bg-rose-500/20' : 'bg-emerald-600/20'

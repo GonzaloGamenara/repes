@@ -2,25 +2,40 @@ import React, { useState, useEffect } from 'react';
 import { useWorkout } from '../../context/WorkoutContext';
 import { supabase } from '../../lib/supabase';
 import Button from '../../components/Button';
-import { translateMuscleToSpanish } from '../../utils/muscleTranslations';
 
-// Spanish to English primary muscles mapping
-const MUSCLE_MAP: Record<string, string | string[]> = {
-  'Todos': 'all',
-  'Abdominales': 'Abdominals',
-  'Pecho': 'Chest',
-  'Hombros': 'Shoulders',
-  'Bíceps': 'Biceps',
-  'Tríceps': 'Triceps',
-  'Espalda': ['Lats', 'Middle Back', 'Lower Back'],
-  'Cuádriceps': 'Quadriceps',
-  'Femorales': 'Hamstrings',
-  'Glúteos': 'Glutes',
-  'Gemelos': 'Calves',
-  'Antebrazos': 'Forearms',
-  'Trapecio': 'Traps',
-  'Cuello': 'Neck'
-};
+const SPANISH_MUSCLES = [
+  'Todos',
+  'Abdominales',
+  'Pecho',
+  'Hombros',
+  'Bíceps',
+  'Tríceps',
+  'Espalda',
+  'Cuádriceps',
+  'Femorales',
+  'Glúteos',
+  'Gemelos',
+  'Antebrazos',
+  'Trapecio',
+  'Aductores',
+  'Abductores',
+  'Cuello'
+];
+
+const CATEGORY_OPTIONS = [
+  'Todos',
+  'Mancuerna',
+  'Barra',
+  'Polea',
+  'Máquina',
+  'Peso Corporal',
+  'Banda',
+  'Fitball',
+  'Balón Medicinal',
+  'Kettlebell',
+  'Barra W',
+  'Otros'
+];
 
 
 
@@ -42,9 +57,10 @@ export const RoutinesView: React.FC = () => {
 
   // Dictionary search states
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [searching, setSearching] = useState(false);
+  const [exerciseDict, setExerciseDict] = useState<any[]>([]);
+  const [loadingDict, setLoadingDict] = useState(false);
   const [selectedMuscle, setSelectedMuscle] = useState('Todos');
+  const [selectedCategory, setSelectedCategory] = useState('Todos');
   
   // Selected exercise to add configs
   const [selectedDictExercise, setSelectedDictExercise] = useState<any | null>(null);
@@ -53,51 +69,77 @@ export const RoutinesView: React.FC = () => {
 
   const activeRoutine = routines.find(r => r.id === editingRoutineId);
 
-  // Debounce search in exercise dictionary with muscle filter
+  // Fetch the entire exercise dictionary once when the routine editor is open
   useEffect(() => {
-    const triggerSearch = searchQuery.trim().length >= 2 || selectedMuscle !== 'Todos';
-
-    if (!triggerSearch) {
-      setSearchResults([]);
-      return;
-    }
-
-    const delayDebounce = setTimeout(async () => {
-      setSearching(true);
+    const fetchDictionary = async () => {
+      setLoadingDict(true);
       try {
-        let q = supabase
+        const { data, error } = await supabase
           .from('exercise_dictionary')
-          .select('id, name, category, primary_muscles, image_url, steps, difficulty');
-
-        // Apply muscle filter if selected
-        if (selectedMuscle !== 'Todos') {
-          const englishVal = MUSCLE_MAP[selectedMuscle];
-          if (Array.isArray(englishVal)) {
-            q = q.in('primary_muscles', englishVal);
-          } else {
-            q = q.eq('primary_muscles', englishVal);
-          }
-        }
-
-        // Apply text query filter if typed
-        if (searchQuery.trim().length >= 2) {
-          q = q.ilike('name', `%${searchQuery.trim()}%`);
-        }
-
-        const { data, error } = await q.limit(15);
+          .select('id, name, category, primary_muscles, image_url, difficulty');
         
         if (!error && data) {
-          setSearchResults(data);
+          setExerciseDict(data);
         }
       } catch (err) {
-        console.error('Error searching dictionary:', err);
+        console.error('Error fetching exercise dictionary:', err);
       } finally {
-        setSearching(false);
+        setLoadingDict(false);
       }
-    }, 350);
+    };
 
-    return () => clearTimeout(delayDebounce);
-  }, [searchQuery, selectedMuscle]);
+    if (editingRoutineId) {
+      fetchDictionary();
+    }
+  }, [editingRoutineId]);
+
+  // Filter exercises in memory
+  const filteredExercises = exerciseDict.filter((ex) => {
+    // 1. Muscle Filter
+    if (selectedMuscle !== 'Todos') {
+      if (selectedMuscle === 'Espalda') {
+        const isEspalda = ['Espalda Media', 'Espalda Baja', 'Dorsales'].includes(ex.primary_muscles);
+        if (!isEspalda) return false;
+      } else {
+        if (ex.primary_muscles !== selectedMuscle) return false;
+      }
+    }
+
+    // 2. Category/Equipment Filter
+    if (selectedCategory !== 'Todos') {
+      if (ex.category !== selectedCategory) return false;
+    }
+
+    // 3. Text Search Query (intelligent accent-insensitive & bilingual search)
+    if (searchQuery.trim().length > 0) {
+      const query = searchQuery.trim().toLowerCase();
+      
+      const normalizeText = (text: string) => {
+        return text 
+          ? text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() 
+          : '';
+      };
+      
+      const normQuery = normalizeText(query);
+      const normName = normalizeText(ex.name);
+      
+      // Also match original English ID name (replacing underscores with spaces)
+      const normId = normalizeText(ex.id ? ex.id.replace(/_/g, ' ') : '');
+      
+      const matchesName = normName.includes(normQuery);
+      const matchesId = normId.includes(normQuery);
+      const matchesMuscle = normalizeText(ex.primary_muscles).includes(normQuery);
+      const matchesCat = normalizeText(ex.category).includes(normQuery);
+      
+      if (!matchesName && !matchesId && !matchesMuscle && !matchesCat) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+
+  const visibleExercises = filteredExercises.slice(0, 40);
 
   const handleCreateRoutine = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,7 +162,6 @@ export const RoutinesView: React.FC = () => {
     );
     setSelectedDictExercise(null);
     setSearchQuery('');
-    setSearchResults([]);
   };
 
   const handleDeleteRoutine = (id: string, name: string) => {
@@ -296,98 +337,159 @@ export const RoutinesView: React.FC = () => {
                 </Button>
               </div>
             ) : (
-              <div className="flex flex-col gap-3 relative">
+              <div className="flex flex-col gap-3 relative w-full max-w-full overflow-hidden">
                 
                 {/* Horizontal scrolling Spanish muscle filters */}
-                <div className="flex gap-1.5 overflow-x-auto pb-1.5 scrollbar-thin select-none touch-pan-x">
-                  {Object.keys(MUSCLE_MAP).map((muscle) => (
-                    <button
-                      key={muscle}
-                      onClick={() => {
-                        setSelectedMuscle(muscle);
-                        // Reset search if changing muscles to keep it clean, or search within muscle
-                      }}
-                      className={`px-3 py-1.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider border shrink-0 transition-all active:scale-95 ${
-                        selectedMuscle === muscle
-                          ? 'bg-emerald-500 text-[#030704] border-emerald-400'
-                          : 'bg-white/5 text-slate-400 border-white/5 hover:text-white'
-                      }`}
-                      style={{ touchAction: 'manipulation' }}
-                    >
-                      {muscle}
-                    </button>
-                  ))}
+                <div className="flex flex-col gap-1">
+                  <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest pl-1">Filtrar por Músculo</span>
+                  <div className="flex gap-1.5 overflow-x-auto pb-1.5 scrollbar-thin select-none touch-pan-x">
+                    {SPANISH_MUSCLES.map((muscle) => (
+                      <button
+                        key={muscle}
+                        type="button"
+                        onClick={() => setSelectedMuscle(muscle)}
+                        className={`px-3 py-1.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider border shrink-0 transition-all active:scale-95 ${
+                          selectedMuscle === muscle
+                            ? 'bg-emerald-500 text-[#030704] border-emerald-400 font-black'
+                            : 'bg-white/5 text-slate-400 border-white/5 hover:text-white hover:bg-white/10'
+                        }`}
+                        style={{ touchAction: 'manipulation' }}
+                      >
+                        {muscle}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Horizontal scrolling Equipment/Category filters */}
+                <div className="flex flex-col gap-1">
+                  <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest pl-1">Filtrar por Equipamiento</span>
+                  <div className="flex gap-1.5 overflow-x-auto pb-1.5 scrollbar-thin select-none touch-pan-x">
+                    {CATEGORY_OPTIONS.map((cat) => (
+                      <button
+                        key={cat}
+                        type="button"
+                        onClick={() => setSelectedCategory(cat)}
+                        className={`px-3 py-1.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider border shrink-0 transition-all active:scale-95 ${
+                          selectedCategory === cat
+                            ? 'bg-teal-500 text-[#030704] border-teal-400 font-black'
+                            : 'bg-white/5 text-slate-400 border-white/5 hover:text-white hover:bg-white/10'
+                        }`}
+                        style={{ touchAction: 'manipulation' }}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 {/* Text input */}
-                <input 
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder={
-                    selectedMuscle === 'Todos' 
-                      ? 'Escribe para buscar (ej: Bench Press)...' 
-                      : `Buscar en ${selectedMuscle}...`
-                  }
-                  className="w-full bg-[#0b0f0b]/60 border border-white/5 focus:border-emerald-500/50 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none transition-all font-semibold"
-                />
-
-                {/* Search dropdown overlay */}
-                {(searching || searchResults.length > 0) && (
-                  <div className="absolute top-24 left-0 right-0 max-h-60 overflow-y-auto bg-[#0b0f0b] border border-white/10 rounded-xl shadow-2xl z-20 flex flex-col divide-y divide-white/5">
-                    {searching && (
-                      <div className="p-3 text-center text-xs text-slate-400 font-bold">
-                        Buscando en el diccionario...
-                      </div>
-                    )}
-                    {!searching && searchResults.map((ex) => (
-                      <div
-                        key={ex.id}
-                        className="p-3 hover:bg-emerald-950/10 cursor-pointer flex items-center justify-between gap-3 transition-colors"
-                        onClick={() => {
-                          setSelectedDictExercise(ex);
-                          setSearchQuery('');
-                          setSearchResults([]);
-                        }}
+                <div className="flex flex-col gap-1">
+                  <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest pl-1">Búsqueda Inteligente</span>
+                  <div className="relative">
+                    <input 
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Escribe el nombre del ejercicio (Español o Inglés)..."
+                      className="w-full bg-[#0b0f0b]/60 border border-white/5 focus:border-emerald-500/50 rounded-xl pl-4 pr-10 py-3 text-xs text-white placeholder-slate-600 focus:outline-none transition-all font-semibold"
+                    />
+                    {searchQuery && (
+                      <button
+                        type="button"
+                        onClick={() => setSearchQuery('')}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white text-xs font-bold p-1"
                       >
-                        <div className="flex items-center gap-3 min-w-0 flex-1">
-                          {ex.image_url ? (
-                            <img 
-                              src={ex.image_url} 
-                              alt={ex.name} 
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                openExerciseFocus(ex.id);
-                              }}
-                              className="w-8 h-8 rounded-md object-cover bg-slate-950 border border-white/5 hover:border-emerald-500/50 active:scale-90 transition-all" 
-                            />
-                          ) : (
-                            <div className="w-8 h-8 rounded-md bg-emerald-950/10 flex items-center justify-center text-[10px] font-black text-emerald-400 border border-white/5">
-                              rp
-                            </div>
-                          )}
-                          <div className="flex flex-col min-w-0">
-                            <span className="text-xs font-bold text-white truncate">{ex.name}</span>
-                            <span className="text-[9px] text-slate-400 uppercase font-bold">
-                              {translateMuscleToSpanish(ex.primary_muscles)} • {ex.category}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* View in large focus trigger */}
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            openExerciseFocus(ex.id);
-                          }}
-                          className="px-2 py-1 bg-white/5 hover:bg-emerald-500/20 text-[9px] font-bold text-emerald-400 rounded-lg shrink-0 border border-emerald-500/10"
-                        >
-                          Ver 🔍
-                        </button>
-                      </div>
-                    ))}
+                        ✕
+                      </button>
+                    )}
                   </div>
-                )}
+                </div>
+
+                {/* Inline Search Results (Not absolute overlay so it does not block navigation) */}
+                <div className="mt-2 bg-[#060a07]/60 border border-white/5 rounded-2xl p-2 max-h-72 overflow-y-auto flex flex-col gap-1.5 divide-y divide-white/5 scrollbar-thin">
+                  {loadingDict ? (
+                    <div className="p-4 text-center text-xs text-slate-400 font-bold flex items-center justify-center gap-2">
+                      <svg className="animate-spin h-4 w-4 text-emerald-400" viewBox="0 0 24 24" fill="none">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Cargando ejercicios...
+                    </div>
+                  ) : visibleExercises.length > 0 ? (
+                    <>
+                      {visibleExercises.map((ex) => (
+                        <div
+                          key={ex.id}
+                          className="pt-2 pb-2 px-2 hover:bg-emerald-950/10 rounded-xl cursor-pointer flex items-center justify-between gap-3 transition-colors"
+                          onClick={() => {
+                            setSelectedDictExercise(ex);
+                            setSearchQuery('');
+                          }}
+                        >
+                          <div className="flex items-center gap-3 min-w-0 flex-1">
+                            {ex.image_url ? (
+                              <img 
+                                src={ex.image_url} 
+                                alt={ex.name} 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  openExerciseFocus(ex.id);
+                                }}
+                                className="w-9 h-9 rounded-lg object-cover bg-slate-950 border border-white/5 hover:border-emerald-500/50 active:scale-90 transition-all shrink-0" 
+                              />
+                            ) : (
+                              <div className="w-9 h-9 rounded-lg bg-emerald-950/10 flex items-center justify-center text-[10px] font-black text-emerald-400 border border-white/5 shrink-0">
+                                rp
+                              </div>
+                            )}
+                            <div className="flex flex-col min-w-0">
+                              <span className="text-xs font-bold text-white truncate">{ex.name}</span>
+                              <div className="flex items-center gap-1.5 flex-wrap mt-0.5">
+                                <span className="text-[8px] bg-emerald-950/40 text-emerald-400 px-1.5 py-0.5 rounded-md font-bold uppercase tracking-wider">
+                                  {ex.primary_muscles}
+                                </span>
+                                <span className="text-[8px] bg-white/5 text-slate-400 px-1.5 py-0.5 rounded-md font-bold uppercase tracking-wider">
+                                  {ex.category}
+                                </span>
+                                <span className={`text-[8px] px-1.5 py-0.5 rounded-md font-bold uppercase tracking-wider ${
+                                  ex.difficulty === 'Principiante' ? 'bg-blue-950/30 text-blue-400' :
+                                  ex.difficulty === 'Intermedio' ? 'bg-amber-950/30 text-amber-400' :
+                                  'bg-rose-950/30 text-rose-400'
+                                }`}>
+                                  {ex.difficulty}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* View in large focus trigger */}
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openExerciseFocus(ex.id);
+                            }}
+                            className="px-2 py-1.5 bg-white/5 hover:bg-emerald-500/20 text-[9px] font-extrabold text-emerald-400 rounded-lg shrink-0 border border-emerald-500/10 transition-colors"
+                          >
+                            Detalle 🔍
+                          </button>
+                        </div>
+                      ))}
+                      {filteredExercises.length > 40 && (
+                        <div className="pt-2 text-center">
+                          <p className="text-[9px] text-slate-500 font-semibold">
+                            Mostrando primeros 40 de {filteredExercises.length} ejercicios. Filtra para acotar.
+                          </p>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <div className="p-6 text-center text-xs text-slate-500 font-medium">
+                      No se encontraron ejercicios. Intenta con otros filtros.
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
