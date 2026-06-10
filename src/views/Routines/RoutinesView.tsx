@@ -107,7 +107,23 @@ export const RoutinesView: React.FC = () => {
 
     // 2. Category/Equipment Filter
     if (selectedCategory !== 'Todos') {
-      if (ex.category !== selectedCategory) return false;
+      if (selectedCategory === 'Otros') {
+        const specificCategories = [
+          'Mancuerna',
+          'Barra',
+          'Polea',
+          'Máquina',
+          'Peso Corporal',
+          'Banda',
+          'Fitball',
+          'Balón Medicinal',
+          'Kettlebell',
+          'Barra W'
+        ];
+        if (specificCategories.includes(ex.category)) return false;
+      } else {
+        if (ex.category !== selectedCategory) return false;
+      }
     }
 
     // 3. Text Search Query (intelligent accent-insensitive & bilingual search)
@@ -128,8 +144,10 @@ export const RoutinesView: React.FC = () => {
       
       const matchesName = normName.includes(normQuery);
       const matchesId = normId.includes(normQuery);
-      const matchesMuscle = normalizeText(ex.primary_muscles).includes(normQuery);
-      const matchesCat = normalizeText(ex.category).includes(normQuery);
+      
+      // Only match muscle and category if they are not already actively filtered to 'Todos'
+      const matchesMuscle = (selectedMuscle === 'Todos') && normalizeText(ex.primary_muscles).includes(normQuery);
+      const matchesCat = (selectedCategory === 'Todos') && normalizeText(ex.category).includes(normQuery);
       
       if (!matchesName && !matchesId && !matchesMuscle && !matchesCat) {
         return false;

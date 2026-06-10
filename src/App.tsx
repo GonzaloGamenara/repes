@@ -51,7 +51,9 @@ function AppContent() {
       )}
 
       {/* Main View Router */}
-      <main className="flex-1 overflow-y-auto min-h-0 relative z-10 pb-28 w-full overflow-x-hidden animate-slide-up-fade">
+      <main className={`flex-1 overflow-y-auto min-h-0 relative z-10 w-full overflow-x-hidden animate-slide-up-fade ${
+        activeView === 'auth' ? 'flex flex-col justify-center' : 'pb-28'
+      }`}>
         {activeView === 'auth' && <LoginView />}
         {activeView === 'planner' && <PlannerView />}
         {activeView === 'routines' && <RoutinesView />}
