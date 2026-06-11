@@ -16,11 +16,11 @@ export const Button: React.FC<ButtonProps> = ({
   const baseStyles = 'inline-flex items-center justify-center font-bold rounded-xl transition-all duration-300 active:scale-[0.96] select-none touch-none';
   
   const variants = {
-    primary: 'bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 shadow-md shadow-emerald-500/10 hover:shadow-emerald-500/20 border border-emerald-400/25 tracking-tight font-extrabold',
-    secondary: 'bg-white/5 border border-white/10 hover:bg-white/10 text-slate-200 hover:text-white backdrop-blur-md active:bg-white/10',
-    outline: 'border border-slate-700 hover:border-emerald-500/30 hover:text-emerald-400 text-slate-300 bg-transparent',
+    primary: 'bg-[#A3FF47] hover:bg-[#b5ff66] text-[#121212] font-black uppercase tracking-wider shadow-lg shadow-[#A3FF47]/10 active:scale-[0.96] border border-[#A3FF47]/20',
+    secondary: 'bg-[#1E1E1E] border border-white/10 hover:bg-[#2A2A2A] text-white hover:text-white active:bg-white/10',
+    outline: 'border border-white/10 hover:border-[#A3FF47]/40 hover:text-[#A3FF47] text-[#A0A0A0] bg-transparent',
     danger: 'bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 active:bg-rose-500/30',
-    ghost: 'text-slate-400 hover:text-slate-200 hover:bg-white/5 bg-transparent'
+    ghost: 'text-[#A0A0A0] hover:text-slate-200 hover:bg-white/5 bg-transparent'
   };
 
   const sizes = {

@@ -1,13 +1,43 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Plus Jakarta Sans', 'Outfit', system-ui, -apple-system, sans-serif;
-  --font-display: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Poppins', 'Montserrat', system-ui, -apple-system, sans-serif;
+  --font-display: 'Montserrat', 'Poppins', system-ui, -apple-system, sans-serif;
   
-  /* Custom vibrant green colors and variables for our design system */
-  --color-brand-primary: #10b981; /* Emerald 500 */
-  --color-brand-secondary: #059669; /* Emerald 600 */
-  --color-brand-accent: #34d399; /* Emerald 400 */
+  /* Redefine emerald, teal, and brand colors to Neon Green (#A3FF47) */
+  --color-emerald-50: #f4ffeb;
+  --color-emerald-100: #e7ffd1;
+  --color-emerald-200: #cbff9e;
+  --color-emerald-300: #b5ff6c;
+  --color-emerald-400: #A3FF47;
+  --color-emerald-500: #A3FF47;
+  --color-emerald-600: #8ae62e;
+  --color-emerald-700: #6cb31f;
+  --color-emerald-800: #558c1b;
+  --color-emerald-900: #46731a;
+  --color-emerald-950: #121e06;
+  
+  --color-teal-50: #f4ffeb;
+  --color-teal-100: #e7ffd1;
+  --color-teal-200: #cbff9e;
+  --color-teal-300: #b5ff6c;
+  --color-teal-400: #A3FF47;
+  --color-teal-500: #A3FF47;
+  --color-teal-600: #8ae62e;
+  --color-teal-700: #6cb31f;
+  --color-teal-800: #558c1b;
+  --color-teal-900: #46731a;
+  --color-teal-950: #121e06;
+
+  /* Redefine slate color palette for secondary labels and borders */
+  --color-slate-300: #CCCCCC;
+  --color-slate-400: #A0A0A0;
+  --color-slate-500: #808080;
+  --color-slate-600: #606060;
+
+  --color-brand-primary: #A3FF47;
+  --color-brand-secondary: #8ae62e;
+  --color-brand-accent: #b5ff6c;
 }
 
 /* Custom glow animation keyframes and utilities */
@@ -31,7 +61,7 @@ html, body, #root {
   height: 100%;
   width: 100%;
   overflow: hidden;
-  background-color: #020503; /* Obsidian Deep Forest */
+  background-color: #121212; /* Sporty Minimalist Dark */
   color: #f8fafc;
   overscroll-behavior-y: contain; /* Prevents elastic scroll bounce in standalone PWA */
   user-select: none;
@@ -108,8 +138,8 @@ input, textarea {
 
 /* Custom selection styling */
 ::selection {
-  background-color: rgba(16, 185, 129, 0.3);
-  color: #a7f3d0;
+  background-color: rgba(163, 255, 71, 0.3);
+  color: #cbff9e;
 }
 
 /* Tailwind v4 Utility Directives */
@@ -131,5 +161,30 @@ input, textarea {
 
 @utility min-h-dvh {
   min-height: 100dvh;
+}
+
+/* Custom Thin unobtrusive Scrollbar styling */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(163, 255, 71, 0.2);
+}
+
+/* Scrollbar styling for Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.05) transparent;
 }
 

@@ -59,8 +59,8 @@ export const PlannerView: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex flex-col">
-          <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider pl-0.5">Atleta</span>
-          <span className="text-sm font-black text-white">
+          <span className="text-[10px] text-[#A0A0A0] font-black uppercase tracking-widest pl-0.5">ATLETA</span>
+          <span className="text-sm font-bold text-white uppercase tracking-wider font-display">
             {user?.user_metadata?.first_name 
               ? `${user.user_metadata.first_name} ${user.user_metadata.last_name || ''}`
               : user?.email?.split('@')[0]}
@@ -68,7 +68,7 @@ export const PlannerView: React.FC = () => {
         </div>
         <div className="flex items-center gap-1">
           {user?.user_metadata?.calorie_goal && (
-            <span className="text-[9px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">
+            <span className="text-[9px] bg-[#A3FF47]/10 border border-[#A3FF47]/20 text-[#A3FF47] font-black uppercase tracking-wider px-2 py-0.5 rounded-md">
               🎯 {user.user_metadata.calorie_goal}
             </span>
           )}
@@ -76,10 +76,10 @@ export const PlannerView: React.FC = () => {
       </div>
 
       {/* Hero Overview */}
-      <div className="bg-gradient-to-r from-emerald-950/20 to-slate-900/10 border border-white/5 rounded-3xl p-5 backdrop-blur-md flex flex-col gap-2">
-        <h2 className="text-base font-bold text-white tracking-tight">Cronograma Semanal</h2>
-        <p className="text-xs text-slate-400 leading-relaxed font-medium">
-          Planificá tus días. Podés asignar <span className="text-emerald-400 font-bold">múltiples rutinas</span> al mismo día (ej: Pecho + Bíceps + Cardio) para realizarlas juntas.
+      <div className="bg-[#1E1E1E] border border-white/5 rounded-xl p-5 flex flex-col gap-2 shadow-lg">
+        <h2 className="text-base font-black text-white uppercase tracking-wider font-display">CRONOGRAMA SEMANAL</h2>
+        <p className="text-xs text-[#A0A0A0] leading-relaxed font-medium">
+          Planificá tus días. Podés asignar <span className="text-[#A3FF47] font-bold">múltiples rutinas</span> al mismo día (ej: Pecho + Bíceps + Cardio) para realizarlas juntas.
         </p>
       </div>
 
@@ -92,15 +92,15 @@ export const PlannerView: React.FC = () => {
           return (
             <div
               key={day}
-              className={`p-4.5 rounded-[24px] border transition-all duration-300 flex flex-col gap-3.5 relative overflow-hidden ${
+              className={`p-4.5 rounded-xl border transition-all duration-300 flex flex-col gap-3.5 relative overflow-hidden ${
                 isToday
-                  ? 'bg-gradient-to-br from-[#06180e]/90 to-[#030d07]/95 border-emerald-500/35 shadow-lg shadow-emerald-500/5'
-                  : 'bg-[#0b100c]/60 border-white/5 hover:border-white/10 hover:bg-[#0e1610]/70'
+                  ? 'bg-[#1E1E1E] border-[#A3FF47]/40 shadow-lg shadow-[#A3FF47]/5'
+                  : 'bg-[#1E1E1E] border-white/5 hover:border-white/10'
               }`}
             >
               {/* Today Badge Indicator */}
               {isToday && (
-                <div className="absolute top-0 right-0 bg-emerald-500 text-slate-950 text-[9px] font-black uppercase px-3 py-0.5 rounded-bl-lg tracking-widest">
+                <div className="absolute top-0 right-0 bg-[#A3FF47] text-[#121212] text-[9px] font-black uppercase px-3 py-0.5 rounded-bl-lg tracking-widest">
                   Hoy
                 </div>
               )}
@@ -108,7 +108,7 @@ export const PlannerView: React.FC = () => {
               {/* Day info and configuration */}
               <div className="flex items-start justify-between gap-4">
                 <div className="flex flex-col gap-1 min-w-0 flex-1">
-                  <span className={`text-sm font-black tracking-tight ${isToday ? 'text-emerald-400' : 'text-slate-200'}`}>
+                  <span className={`text-sm font-black tracking-widest uppercase ${isToday ? 'text-[#A3FF47]' : 'text-slate-200'}`}>
                     {day}
                   </span>
                   
@@ -121,14 +121,14 @@ export const PlannerView: React.FC = () => {
                         return (
                           <span 
                             key={rId}
-                            className="inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-wider bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-lg shadow-sm"
+                            className="inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-wider bg-[#A3FF47]/10 border border-[#A3FF47]/20 text-[#A3FF47] px-2 py-0.5 rounded-md shadow-sm"
                           >
                             💪 {routine.name.split(' (')[0]}
                           </span>
                         );
                       })
                     ) : (
-                      <span className="text-[10px] text-slate-500 font-black uppercase tracking-widest pl-0.5 mt-0.5">
+                      <span className="text-[10px] text-[#A0A0A0] font-black uppercase tracking-widest pl-0.5 mt-0.5">
                         💤 Descanso
                       </span>
                     )}
@@ -141,7 +141,7 @@ export const PlannerView: React.FC = () => {
                     setEditingDay(day);
                     setTempSelectedRoutines(assignedRoutineIds);
                   }}
-                  className="bg-white/5 hover:bg-emerald-500/10 border border-white/5 hover:border-emerald-500/15 text-[9.5px] font-black uppercase tracking-widest text-slate-300 hover:text-emerald-400 rounded-xl px-3.5 py-2 active:scale-95 transition-all duration-300 flex-shrink-0 touch-none"
+                  className="bg-[#121212] hover:bg-[#A3FF47]/10 border border-white/5 hover:border-[#A3FF47]/15 text-[9.5px] font-black uppercase tracking-widest text-[#A0A0A0] hover:text-[#A3FF47] rounded-xl px-3.5 py-2 active:scale-95 transition-all duration-300 flex-shrink-0 touch-none"
                   style={{ touchAction: 'manipulation' }}
                 >
                   Configurar
@@ -173,16 +173,16 @@ export const PlannerView: React.FC = () => {
       {editingDay && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-xl px-4 animate-fade-in">
           <div className="absolute inset-0" onClick={() => setEditingDay(null)}></div>
-          <div className="relative bg-[#070b08]/95 border border-emerald-500/10 rounded-[32px] max-w-sm w-full p-6 shadow-2xl shadow-emerald-950/20 z-10 flex flex-col gap-4 animate-scale-in">
+          <div className="relative bg-[#1E1E1E] border border-white/10 rounded-xl max-w-sm w-full p-6 shadow-2xl z-10 flex flex-col gap-4 animate-scale-in">
             
             <div className="flex items-center justify-between border-b border-white/[0.04] pb-3">
               <div className="flex flex-col">
-                <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest">Planificar</span>
-                <h3 className="text-sm font-black text-white">Rutinas del {editingDay}</h3>
+                <span className="text-[10px] text-[#A3FF47] font-black uppercase tracking-widest">PLANIFICAR</span>
+                <h3 className="text-sm font-black text-white uppercase tracking-wider">Rutinas del {editingDay}</h3>
               </div>
               <button 
                 onClick={() => setEditingDay(null)}
-                className="text-slate-400 hover:text-white text-xs font-bold bg-white/5 hover:bg-white/10 rounded-full w-7 h-7 flex items-center justify-center transition-all"
+                className="text-[#A0A0A0] hover:text-white text-xs font-bold bg-[#121212] hover:bg-white/10 rounded-full w-7 h-7 flex items-center justify-center transition-all"
               >
                 ✕
               </button>
@@ -196,21 +196,21 @@ export const PlannerView: React.FC = () => {
                     <div 
                       key={routine.id}
                       onClick={() => handleToggleRoutine(routine.id)}
-                      className={`flex items-center justify-between p-3.5 rounded-2xl border transition-all duration-300 cursor-pointer select-none ${
+                      className={`flex items-center justify-between p-3.5 rounded-xl border transition-all duration-300 cursor-pointer select-none ${
                         isChecked 
-                          ? 'bg-emerald-950/20 border-emerald-500/35 text-emerald-300' 
-                          : 'bg-[#030604] border-white/5 text-slate-300 hover:border-white/10 hover:bg-[#090e0a]'
+                          ? 'bg-[#A3FF47]/10 border-[#A3FF47]/30 text-[#A3FF47]' 
+                          : 'bg-[#121212] border-white/5 text-[#A0A0A0] hover:border-white/10 hover:bg-[#121212]/80'
                       }`}
                     >
                       <div className="flex flex-col gap-0.5 text-left">
                         <span className="text-xs font-black tracking-tight leading-snug">{routine.name}</span>
-                        <span className="text-[9px] text-slate-500 font-bold uppercase tracking-wider">
+                        <span className="text-[9px] text-[#A0A0A0] font-bold uppercase tracking-wider">
                           {routine.exercises.length} {routine.exercises.length === 1 ? 'Ejercicio' : 'Ejercicios'}
                         </span>
                       </div>
                       <div className={`w-5 h-5 rounded-lg border flex items-center justify-center transition-all duration-300 ${
                         isChecked 
-                          ? 'bg-gradient-to-r from-emerald-500 to-teal-400 border-transparent text-[#020503] scale-105 shadow-sm shadow-emerald-500/10' 
+                          ? 'bg-[#A3FF47] border-transparent text-[#121212] scale-105 shadow-sm shadow-[#A3FF47]/10' 
                           : 'border-white/20 bg-transparent'
                       }`}>
                         {isChecked && (
@@ -224,7 +224,7 @@ export const PlannerView: React.FC = () => {
                 })}
               </div>
             ) : (
-              <div className="text-xs text-slate-500 leading-relaxed text-center py-8 font-medium">
+              <div className="text-xs text-[#A0A0A0] leading-relaxed text-center py-8 font-medium">
                 No tenés rutinas creadas. Creá una plantilla en la pestaña **"Mis Rutinas"** para asignarla.
               </div>
             )}
@@ -242,7 +242,7 @@ export const PlannerView: React.FC = () => {
                 variant="secondary"
                 size="full"
                 onClick={() => setEditingDay(null)}
-                className="py-2.5 text-xs font-black uppercase tracking-wider text-slate-400 hover:text-white"
+                className="py-2.5 text-xs font-black uppercase tracking-wider text-[#A0A0A0] hover:text-white"
               >
                 Cancelar
               </Button>

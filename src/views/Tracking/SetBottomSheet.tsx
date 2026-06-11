@@ -49,22 +49,22 @@ export const SetBottomSheet: React.FC = () => {
     if (wDiff > 0) {
       return {
         text: `🟢 ¡Vas ${wDiff}kg arriba en peso! Excelente sobrecarga. 🔥`,
-        class: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'
+        class: 'text-[#A3FF47] bg-[#A3FF47]/10 border border-[#A3FF47]/20'
       };
     } else if (wDiff === 0 && rDiff > 0) {
       return {
         text: `🟢 ¡Vas ${rDiff} reps arriba! Excelente sobrecarga. 💪`,
-        class: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'
+        class: 'text-[#A3FF47] bg-[#A3FF47]/10 border border-[#A3FF47]/20'
       };
     } else if (wDiff === 0 && rDiff === 0) {
       return {
         text: `⚪ Igualando el rendimiento anterior. Buen trabajo.`,
-        class: 'text-slate-400 bg-slate-500/10 border-slate-500/20'
+        class: 'text-[#A0A0A0] bg-white/5 border border-white/10'
       };
     } else {
       return {
         text: `🟡 Serie de descarga o peso inferior (${wDiff}kg de diferencia).`,
-        class: 'text-amber-400 bg-amber-500/10 border-amber-500/20'
+        class: 'text-amber-400 bg-amber-500/10 border border-amber-500/20'
       };
     }
   };
@@ -79,7 +79,7 @@ export const SetBottomSheet: React.FC = () => {
 
       {/* Bottom Sheet Drawer */}
       <div 
-        className="relative w-full max-w-lg bg-[#0b0f0b] border-t border-white/10 rounded-t-[30px] p-6 shadow-2xl z-10 animate-slide-up pb-[calc(env(safe-area-inset-bottom)+24px)] flex flex-col gap-6"
+        className="relative w-full max-w-lg bg-[#1E1E1E] border-t border-white/10 rounded-t-2xl p-6 shadow-2xl z-10 animate-slide-up pb-[calc(env(safe-area-inset-bottom)+24px)] flex flex-col gap-6"
         onClick={(e) => e.stopPropagation()}
       >
         {/* iOS bar handle */}
@@ -87,19 +87,19 @@ export const SetBottomSheet: React.FC = () => {
 
         {/* Title / Info */}
         <div className="flex flex-col">
-          <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest pl-0.5">
+          <span className="text-[10px] font-bold text-[#A3FF47] uppercase tracking-widest pl-0.5">
             {activeExercise.name}
           </span>
-          <h2 className="text-lg font-black text-white">
+          <h2 className="text-lg font-black text-white uppercase tracking-wider">
             Serie #{activeSet.number}
           </h2>
-          <span className="text-xs text-slate-400 mt-1 font-medium">
-            Récord anterior: <strong className="text-slate-200">{activeSet.prevWeight}kg × {activeSet.prevReps} repes</strong>
+          <span className="text-xs text-[#A0A0A0] mt-1 font-medium">
+            Récord anterior: <strong className="text-white font-bold">{activeSet.prevWeight}kg × {activeSet.prevReps} repes</strong>
           </span>
         </div>
 
         {/* Comparison Alert Banner */}
-        <div className={`p-3 rounded-2xl border text-xs font-semibold text-center leading-relaxed ${comp.class}`}>
+        <div className={`p-3 rounded-xl border text-xs font-semibold text-center leading-relaxed ${comp.class}`}>
           {comp.text}
         </div>
 
@@ -109,8 +109,8 @@ export const SetBottomSheet: React.FC = () => {
           {/* Weight Control */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between px-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Peso (kg)</span>
-              <span className="text-xs font-mono font-bold text-white bg-slate-900 px-2 py-0.5 rounded-md">
+              <span className="text-[10px] font-bold text-[#A0A0A0] uppercase tracking-wider">Peso (kg)</span>
+              <span className="text-xs font-mono font-bold text-[#A3FF47] bg-[#121212] px-2 py-0.5 rounded-md border border-white/5">
                 {weight} kg
               </span>
             </div>
@@ -119,37 +119,37 @@ export const SetBottomSheet: React.FC = () => {
             <div className="grid grid-cols-6 gap-1 sm:gap-1.5">
               <button 
                 onClick={() => setWeight(Math.max(0, weight - 5))}
-                className="py-2 px-0.5 text-center rounded-lg bg-white/5 border border-white/5 text-[10px] sm:text-xs font-bold text-slate-300 active:scale-90 transition-all font-mono"
+                className="py-2 px-0.5 text-center rounded-lg bg-[#121212] border border-white/10 hover:bg-[#2A2A2A] text-[10px] sm:text-xs font-bold text-white active:scale-95 transition-all font-mono"
               >
                 -5
               </button>
               <button 
                 onClick={() => setWeight(Math.max(0, weight - 2.5))}
-                className="py-2 px-0.5 text-center rounded-lg bg-white/5 border border-white/5 text-[10px] sm:text-xs font-bold text-slate-300 active:scale-90 transition-all font-mono"
+                className="py-2 px-0.5 text-center rounded-lg bg-[#121212] border border-white/10 hover:bg-[#2A2A2A] text-[10px] sm:text-xs font-bold text-white active:scale-95 transition-all font-mono"
               >
                 -2.5
               </button>
               <button 
                 onClick={() => setWeight(Math.max(0, weight - 1))}
-                className="py-2 px-0.5 text-center rounded-lg bg-white/5 border border-white/5 text-[10px] sm:text-xs font-bold text-slate-300 active:scale-90 transition-all font-mono"
+                className="py-2 px-0.5 text-center rounded-lg bg-[#121212] border border-white/10 hover:bg-[#2A2A2A] text-[10px] sm:text-xs font-bold text-white active:scale-95 transition-all font-mono"
               >
                 -1
               </button>
               <button 
                 onClick={() => setWeight(weight + 1)}
-                className="py-2 px-0.5 text-center rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-[10px] sm:text-xs font-bold text-emerald-400 active:scale-90 transition-all font-mono"
+                className="py-2 px-0.5 text-center rounded-lg bg-[#A3FF47]/10 border border-[#A3FF47]/20 hover:bg-[#A3FF47]/20 text-[10px] sm:text-xs font-bold text-[#A3FF47] active:scale-95 transition-all font-mono"
               >
                 +1
               </button>
               <button 
                 onClick={() => setWeight(weight + 2.5)}
-                className="py-2 px-0.5 text-center rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-[10px] sm:text-xs font-bold text-emerald-400 active:scale-90 transition-all font-mono"
+                className="py-2 px-0.5 text-center rounded-lg bg-[#A3FF47]/10 border border-[#A3FF47]/20 hover:bg-[#A3FF47]/20 text-[10px] sm:text-xs font-bold text-[#A3FF47] active:scale-95 transition-all font-mono"
               >
                 +2.5
               </button>
               <button 
                 onClick={() => setWeight(weight + 5)}
-                className="py-2 px-0.5 text-center rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-[10px] sm:text-xs font-bold text-emerald-400 active:scale-90 transition-all font-mono"
+                className="py-2 px-0.5 text-center rounded-lg bg-[#A3FF47]/10 border border-[#A3FF47]/20 hover:bg-[#A3FF47]/20 text-[10px] sm:text-xs font-bold text-[#A3FF47] active:scale-95 transition-all font-mono"
               >
                 +5
               </button>
@@ -162,7 +162,7 @@ export const SetBottomSheet: React.FC = () => {
               inputMode="decimal"
               value={weight || ''}
               onChange={(e) => setWeight(parseFloat(e.target.value) || 0)}
-              className="bg-[#030704] border border-slate-900 rounded-xl px-4 py-2.5 text-center text-sm font-bold text-white focus:outline-none focus:border-emerald-500/50"
+              className="bg-[#121212] border border-white/10 rounded-xl px-4 py-2.5 text-center text-sm font-mono font-bold text-white focus:outline-none focus:border-[#A3FF47] transition-all"
               placeholder="Editar manualmente"
               style={{ touchAction: 'manipulation' }}
             />
@@ -171,8 +171,8 @@ export const SetBottomSheet: React.FC = () => {
           {/* Reps Control */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between px-1">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Repeticiones</span>
-              <span className="text-xs font-mono font-bold text-white bg-slate-900 px-2 py-0.5 rounded-md">
+              <span className="text-[10px] font-bold text-[#A0A0A0] uppercase tracking-wider">Repeticiones</span>
+              <span className="text-xs font-mono font-bold text-[#A3FF47] bg-[#121212] px-2 py-0.5 rounded-md border border-white/5">
                 {reps} repes
               </span>
             </div>
@@ -181,13 +181,13 @@ export const SetBottomSheet: React.FC = () => {
             <div className="flex items-center gap-3">
               <button 
                 onClick={() => setReps(Math.max(0, reps - 1))}
-                className="flex-1 py-3 rounded-xl bg-white/5 border border-white/5 text-sm font-bold text-slate-300 active:scale-90 transition-all"
+                className="flex-1 py-3 rounded-xl bg-[#121212] border border-white/10 hover:bg-[#2A2A2A] text-sm font-bold text-white active:scale-95 transition-all"
               >
                 -1 Repe
               </button>
               <button 
                 onClick={() => setReps(reps + 1)}
-                className="flex-1 py-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-sm font-bold text-emerald-400 active:scale-90 transition-all"
+                className="flex-1 py-3 rounded-xl bg-[#A3FF47]/10 border border-[#A3FF47]/20 hover:bg-[#A3FF47]/20 text-sm font-bold text-[#A3FF47] active:scale-95 transition-all"
               >
                 +1 Repe
               </button>
@@ -200,7 +200,7 @@ export const SetBottomSheet: React.FC = () => {
               inputMode="numeric"
               value={reps || ''}
               onChange={(e) => setReps(parseInt(e.target.value) || 0)}
-              className="bg-[#030704] border border-slate-900 rounded-xl px-4 py-2.5 text-center text-sm font-bold text-white focus:outline-none focus:border-emerald-500/50"
+              className="bg-[#121212] border border-white/10 rounded-xl px-4 py-2.5 text-center text-sm font-mono font-bold text-white focus:outline-none focus:border-[#A3FF47] transition-all"
               placeholder="Editar manualmente"
               style={{ touchAction: 'manipulation' }}
             />
@@ -240,4 +240,5 @@ export const SetBottomSheet: React.FC = () => {
     </div>
   );
 };
+
 export default SetBottomSheet;

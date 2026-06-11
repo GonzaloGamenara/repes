@@ -206,11 +206,11 @@ export const RoutinesView: React.FC = () => {
                 setSearchQuery('');
                 setSelectedMuscle('Todos');
               }}
-              className="flex items-center gap-1 text-slate-400 hover:text-emerald-400 font-semibold text-xs transition-colors"
+              className="flex items-center gap-1 text-[#A0A0A0] hover:text-[#A3FF47] font-black uppercase text-[10px] tracking-widest transition-colors"
             >
               ← Volver
             </button>
-            <h1 className="text-sm font-black text-white truncate max-w-[180px]">
+            <h1 className="text-sm font-black text-white uppercase tracking-wider truncate max-w-[180px]">
               {activeRoutine.name}
             </h1>
             <Button
@@ -225,20 +225,20 @@ export const RoutinesView: React.FC = () => {
 
           {/* Added Exercises List */}
           <div className="flex flex-col gap-3">
-            <h2 className="text-[10px] font-bold text-slate-500 uppercase tracking-wider pl-1">
-              Ejercicios agregados ({activeRoutine.exercises.length})
+            <h2 className="text-[10px] font-black text-[#A0A0A0] uppercase tracking-widest pl-1">
+              EJERCICIOS AGREGADOS ({activeRoutine.exercises.length})
             </h2>
 
             {activeRoutine.exercises.length === 0 ? (
-              <div className="text-center py-6 border border-dashed border-white/5 rounded-2xl bg-[#0b0f0b]/20">
-                <p className="text-xs text-slate-500">Esta rutina no tiene ejercicios. Buscalos y agregalos abajo.</p>
+              <div className="text-center py-6 border border-dashed border-white/5 rounded-xl bg-[#1E1E1E]">
+                <p className="text-xs text-[#A0A0A0] font-medium">Esta rutina no tiene ejercicios. Buscalos y agregalos abajo.</p>
               </div>
             ) : (
               <div className="flex flex-col gap-2">
                 {activeRoutine.exercises.map((exercise, idx) => (
                   <div 
                     key={exercise.id}
-                    className="p-3 bg-[#0b0f0b]/40 border border-white/5 rounded-2xl flex items-center justify-between gap-3"
+                    className="p-3 bg-[#1E1E1E] border border-white/5 rounded-xl flex items-center justify-between gap-3 shadow-md"
                   >
                     {/* Exercise info with mini thumb */}
                     <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -247,12 +247,12 @@ export const RoutinesView: React.FC = () => {
                           src={exercise.image_url} 
                           alt={exercise.name} 
                           onClick={() => openExerciseFocus(exercise.exercise_id)}
-                          className="w-10 h-10 rounded-lg object-cover border border-white/5 bg-slate-900 cursor-pointer hover:border-emerald-500/50 active:scale-95 transition-all"
+                          className="w-10 h-10 rounded-lg object-cover border border-white/5 bg-slate-950 cursor-pointer hover:border-[#A3FF47] hover:scale-105 active:scale-95 transition-all"
                         />
                       ) : (
                         <div 
                           onClick={() => openExerciseFocus(exercise.exercise_id)}
-                          className="w-10 h-10 rounded-lg bg-emerald-950/20 border border-white/5 flex items-center justify-center text-xs font-black text-emerald-400 cursor-pointer"
+                          className="w-10 h-10 rounded-lg bg-[#A3FF47]/10 border border-white/5 flex items-center justify-center text-xs font-black text-[#A3FF47] cursor-pointer"
                         >
                           rp
                         </div>
@@ -260,11 +260,11 @@ export const RoutinesView: React.FC = () => {
                       <div className="flex flex-col min-w-0">
                         <span 
                           onClick={() => openExerciseFocus(exercise.exercise_id)}
-                          className="text-xs font-bold text-white truncate leading-tight cursor-pointer hover:text-emerald-400"
+                          className="text-xs font-bold text-white truncate leading-tight cursor-pointer hover:text-[#A3FF47]"
                         >
                           {exercise.name}
                         </span>
-                        <span className="text-[10px] text-slate-400 font-medium">
+                        <span className="text-[10px] text-[#A0A0A0] font-medium">
                           {exercise.target_sets} series × {exercise.target_reps} reps
                         </span>
                       </div>
@@ -301,21 +301,21 @@ export const RoutinesView: React.FC = () => {
 
           {/* Add Exercise Search Interface */}
           <div className="flex flex-col gap-3 mt-4 border-t border-white/5 pt-5">
-            <h2 className="text-[10px] font-bold text-slate-500 uppercase tracking-wider pl-1">
-              Buscar ejercicio en diccionario
+            <h2 className="text-[10px] font-black text-[#A0A0A0] uppercase tracking-widest pl-1">
+              BUSCAR EJERCICIO EN DICCIONARIO
             </h2>
 
             {/* Config Box if exercise is selected */}
             {selectedDictExercise ? (
-              <div className="p-4 bg-emerald-950/10 border border-emerald-500/30 rounded-2xl flex flex-col gap-4 animate-fade-in">
+              <div className="p-4 bg-[#1E1E1E] border border-[#A3FF47]/30 rounded-xl flex flex-col gap-4 animate-fade-in shadow-xl">
                 <div className="flex justify-between items-start gap-4">
                   <div className="flex flex-col min-w-0">
-                    <span className="text-xs text-emerald-400 font-bold">Configurar Ejercicio</span>
+                    <span className="text-[10px] text-[#A3FF47] font-black uppercase tracking-wider">CONFIGURAR EJERCICIO</span>
                     <span className="text-sm font-black text-white truncate mt-0.5">{selectedDictExercise.name}</span>
                   </div>
                   <button 
                     onClick={() => setSelectedDictExercise(null)}
-                    className="text-xs text-slate-400 hover:text-white"
+                    className="text-xs text-[#A0A0A0] hover:text-white"
                   >
                     Cancelar
                   </button>
@@ -323,24 +323,24 @@ export const RoutinesView: React.FC = () => {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[9px] font-bold text-slate-400 uppercase pl-0.5">Series objetivo</label>
+                    <label className="text-[9px] font-black text-[#A0A0A0] uppercase tracking-wider pl-0.5">Series objetivo</label>
                     <input 
                       type="number"
                       value={targetSets}
                       onChange={(e) => setTargetSets(parseInt(e.target.value) || 1)}
-                      className="bg-[#030704] border border-slate-900 focus:border-emerald-500/40 rounded-xl px-3 py-2 text-xs text-white text-center font-bold focus:outline-none"
+                      className="bg-[#121212] border border-white/5 focus:border-[#A3FF47] rounded-xl px-3 py-2 text-xs text-white text-center font-bold focus:outline-none font-mono"
                       min={1}
                       max={10}
                     />
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[9px] font-bold text-slate-400 uppercase pl-0.5">Repeticiones</label>
+                    <label className="text-[9px] font-black text-[#A0A0A0] uppercase tracking-wider pl-0.5">Repeticiones</label>
                     <input 
                       type="text"
                       value={targetReps}
                       onChange={(e) => setTargetReps(e.target.value)}
                       placeholder="ej: 8-12 o 10"
-                      className="bg-[#030704] border border-slate-900 focus:border-emerald-500/40 rounded-xl px-3 py-2 text-xs text-white text-center font-bold focus:outline-none"
+                      className="bg-[#121212] border border-white/5 focus:border-[#A3FF47] rounded-xl px-3 py-2 text-xs text-white text-center font-bold focus:outline-none"
                     />
                   </div>
                 </div>
@@ -359,7 +359,7 @@ export const RoutinesView: React.FC = () => {
                 
                 {/* Horizontal scrolling Spanish muscle filters */}
                 <div className="flex flex-col gap-1">
-                  <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest pl-1">Filtrar por Músculo</span>
+                  <span className="text-[9px] font-bold text-[#A0A0A0] uppercase tracking-widest pl-1">Filtrar por Músculo</span>
                   <div className="flex gap-1.5 overflow-x-auto pb-1.5 scrollbar-thin select-none touch-pan-x">
                     {SPANISH_MUSCLES.map((muscle) => (
                       <button
@@ -368,8 +368,8 @@ export const RoutinesView: React.FC = () => {
                         onClick={() => setSelectedMuscle(muscle)}
                         className={`px-3 py-1.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider border shrink-0 transition-all active:scale-95 ${
                           selectedMuscle === muscle
-                            ? 'bg-emerald-500 text-[#030704] border-emerald-400 font-black'
-                            : 'bg-white/5 text-slate-400 border-white/5 hover:text-white hover:bg-white/10'
+                            ? 'bg-[#A3FF47] text-[#121212] border-transparent font-black'
+                            : 'bg-[#121212] text-[#A0A0A0] border-white/5 hover:text-white'
                         }`}
                         style={{ touchAction: 'manipulation' }}
                       >
@@ -381,7 +381,7 @@ export const RoutinesView: React.FC = () => {
 
                 {/* Horizontal scrolling Equipment/Category filters */}
                 <div className="flex flex-col gap-1">
-                  <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest pl-1">Filtrar por Equipamiento</span>
+                  <span className="text-[9px] font-bold text-[#A0A0A0] uppercase tracking-widest pl-1">Filtrar por Equipamiento</span>
                   <div className="flex gap-1.5 overflow-x-auto pb-1.5 scrollbar-thin select-none touch-pan-x">
                     {CATEGORY_OPTIONS.map((cat) => (
                       <button
@@ -390,8 +390,8 @@ export const RoutinesView: React.FC = () => {
                         onClick={() => setSelectedCategory(cat)}
                         className={`px-3 py-1.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider border shrink-0 transition-all active:scale-95 ${
                           selectedCategory === cat
-                            ? 'bg-teal-500 text-[#030704] border-teal-400 font-black'
-                            : 'bg-white/5 text-slate-400 border-white/5 hover:text-white hover:bg-white/10'
+                            ? 'bg-[#A3FF47] text-[#121212] border-transparent font-black'
+                            : 'bg-[#121212] text-[#A0A0A0] border-white/5 hover:text-white'
                         }`}
                         style={{ touchAction: 'manipulation' }}
                       >
@@ -403,20 +403,20 @@ export const RoutinesView: React.FC = () => {
 
                 {/* Text input */}
                 <div className="flex flex-col gap-1">
-                  <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest pl-1">Búsqueda Inteligente</span>
+                  <span className="text-[9px] font-bold text-[#A0A0A0] uppercase tracking-widest pl-1">Búsqueda Inteligente</span>
                   <div className="relative">
                     <input 
                       type="text"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Escribe el nombre del ejercicio (Español o Inglés)..."
-                      className="w-full bg-[#0b0f0b]/60 border border-white/5 focus:border-emerald-500/50 rounded-xl pl-4 pr-10 py-3 text-xs text-white placeholder-slate-600 focus:outline-none transition-all font-semibold"
+                      className="w-full bg-[#121212] border border-white/5 focus:border-[#A3FF47] rounded-xl pl-4 pr-10 py-3 text-xs text-white placeholder-neutral-700 focus:outline-none transition-all font-semibold"
                     />
                     {searchQuery && (
                       <button
                         type="button"
                         onClick={() => setSearchQuery('')}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white text-xs font-bold p-1"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A0A0A0] hover:text-white text-xs font-bold p-1"
                       >
                         ✕
                       </button>
@@ -425,10 +425,10 @@ export const RoutinesView: React.FC = () => {
                 </div>
 
                 {/* Inline Search Results (Not absolute overlay so it does not block navigation) */}
-                <div className="mt-2 bg-[#060a07]/60 border border-white/5 rounded-2xl p-2 max-h-72 overflow-y-auto flex flex-col gap-1.5 divide-y divide-white/5 scrollbar-thin">
+                <div className="mt-2 bg-[#121212] border border-white/5 rounded-xl p-2 max-h-72 overflow-y-auto flex flex-col gap-1.5 divide-y divide-white/5 scrollbar-thin">
                   {loadingDict ? (
-                    <div className="p-4 text-center text-xs text-slate-400 font-bold flex items-center justify-center gap-2">
-                      <svg className="animate-spin h-4 w-4 text-emerald-400" viewBox="0 0 24 24" fill="none">
+                    <div className="p-4 text-center text-xs text-[#A0A0A0] font-bold flex items-center justify-center gap-2">
+                      <svg className="animate-spin h-4 w-4 text-[#A3FF47]" viewBox="0 0 24 24" fill="none">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
@@ -439,7 +439,7 @@ export const RoutinesView: React.FC = () => {
                       {visibleExercises.map((ex) => (
                         <div
                           key={ex.id}
-                          className="pt-2 pb-2 px-2 hover:bg-emerald-950/10 rounded-xl cursor-pointer flex items-center justify-between gap-3 transition-colors"
+                          className="pt-2 pb-2 px-2 hover:bg-[#A3FF47]/5 rounded-xl cursor-pointer flex items-center justify-between gap-3 transition-colors"
                           onClick={() => {
                             setSelectedDictExercise(ex);
                             setSearchQuery('');
@@ -454,20 +454,20 @@ export const RoutinesView: React.FC = () => {
                                   e.stopPropagation();
                                   openExerciseFocus(ex.id);
                                 }}
-                                className="w-9 h-9 rounded-lg object-cover bg-slate-950 border border-white/5 hover:border-emerald-500/50 active:scale-90 transition-all shrink-0" 
+                                className="w-9 h-9 rounded-lg object-cover bg-slate-950 border border-white/5 hover:border-[#A3FF47] hover:scale-90 transition-all shrink-0" 
                               />
                             ) : (
-                              <div className="w-9 h-9 rounded-lg bg-emerald-950/10 flex items-center justify-center text-[10px] font-black text-emerald-400 border border-white/5 shrink-0">
+                              <div className="w-9 h-9 rounded-lg bg-[#A3FF47]/10 flex items-center justify-center text-[10px] font-black text-[#A3FF47] border border-white/5 shrink-0">
                                 rp
                               </div>
                             )}
                             <div className="flex flex-col min-w-0">
                               <span className="text-xs font-bold text-white truncate">{ex.name}</span>
                               <div className="flex items-center gap-1.5 flex-wrap mt-0.5">
-                                <span className="text-[8px] bg-emerald-950/40 text-emerald-400 px-1.5 py-0.5 rounded-md font-bold uppercase tracking-wider">
+                                <span className="text-[8px] bg-[#A3FF47]/10 text-[#A3FF47] px-1.5 py-0.5 rounded-md font-bold uppercase tracking-wider">
                                   {ex.primary_muscles}
                                 </span>
-                                <span className="text-[8px] bg-white/5 text-slate-400 px-1.5 py-0.5 rounded-md font-bold uppercase tracking-wider">
+                                <span className="text-[8px] bg-white/5 text-[#A0A0A0] px-1.5 py-0.5 rounded-md font-bold uppercase tracking-wider">
                                   {ex.category}
                                 </span>
                                 <span className={`text-[8px] px-1.5 py-0.5 rounded-md font-bold uppercase tracking-wider ${
@@ -488,7 +488,7 @@ export const RoutinesView: React.FC = () => {
                               e.stopPropagation();
                               openExerciseFocus(ex.id);
                             }}
-                            className="px-2 py-1.5 bg-white/5 hover:bg-emerald-500/20 text-[9px] font-extrabold text-emerald-400 rounded-lg shrink-0 border border-emerald-500/10 transition-colors"
+                            className="px-2 py-1.5 bg-[#1E1E1E] hover:bg-[#A3FF47]/20 text-[9px] font-extrabold text-[#A3FF47] rounded-lg shrink-0 border border-white/5 transition-colors"
                           >
                             Detalle 🔍
                           </button>
@@ -496,14 +496,14 @@ export const RoutinesView: React.FC = () => {
                       ))}
                       {filteredExercises.length > 40 && (
                         <div className="pt-2 text-center">
-                          <p className="text-[9px] text-slate-500 font-semibold">
+                          <p className="text-[9px] text-[#A0A0A0] font-semibold">
                             Mostrando primeros 40 de {filteredExercises.length} ejercicios. Filtra para acotar.
                           </p>
                         </div>
                       )}
                     </>
                   ) : (
-                    <div className="p-6 text-center text-xs text-slate-500 font-medium">
+                    <div className="p-6 text-center text-xs text-[#A0A0A0] font-medium">
                       No se encontraron ejercicios. Intenta con otros filtros.
                     </div>
                   )}
@@ -518,8 +518,8 @@ export const RoutinesView: React.FC = () => {
           {/* Header */}
           <div className="flex items-center justify-between">
             <div className="flex flex-col">
-              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider pl-0.5">Mis Plantillas</span>
-              <h1 className="text-xl font-black text-white">Mis Rutinas</h1>
+              <span className="text-[10px] text-[#A0A0A0] font-black uppercase tracking-widest pl-0.5">MIS PLANTILLAS</span>
+              <h1 className="text-xl font-black text-white uppercase tracking-wider font-display">Mis Rutinas</h1>
             </div>
             <Button
               variant="primary"
@@ -533,11 +533,11 @@ export const RoutinesView: React.FC = () => {
 
           {/* Empty state or list */}
           {routines.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-20 text-center gap-4 bg-white/[0.01] border border-white/[0.02] rounded-3xl p-6">
+            <div className="flex flex-col items-center justify-center py-20 text-center gap-4 bg-[#1E1E1E] border border-white/5 rounded-xl p-6">
               <span className="text-4xl">💪</span>
               <div className="flex flex-col gap-1">
-                <h3 className="text-sm font-bold text-white">No tenés rutinas creadas</h3>
-                <p className="text-xs text-slate-400 max-w-[240px] leading-relaxed">
+                <h3 className="text-sm font-bold text-white uppercase tracking-wider">No tenés rutinas creadas</h3>
+                <p className="text-xs text-[#A0A0A0] max-w-[240px] leading-relaxed">
                   Crea tu primera rutina de entrenamiento para empezar a trackear tu sobrecarga.
                 </p>
               </div>
@@ -555,14 +555,14 @@ export const RoutinesView: React.FC = () => {
               {routines.map((routine) => (
                 <div
                   key={routine.id}
-                  className="p-4 bg-[#0b0f0b]/60 border border-white/5 rounded-2xl flex items-center justify-between gap-4 hover:border-emerald-500/20 transition-all cursor-pointer"
+                  className="p-4 bg-[#1E1E1E] border border-white/5 rounded-xl flex items-center justify-between gap-4 hover:border-[#A3FF47]/20 transition-all cursor-pointer shadow-md"
                   onClick={() => setEditingRoutineId(routine.id)}
                 >
                   <div className="flex flex-col min-w-0">
-                    <span className="text-sm font-black text-white truncate group-hover:text-emerald-400 transition-colors">
+                    <span className="text-sm font-black text-white truncate group-hover:text-[#A3FF47] transition-colors">
                       {routine.name}
                     </span>
-                    <span className="text-xs text-slate-400 mt-0.5">
+                    <span className="text-xs text-[#A0A0A0] mt-0.5">
                       {routine.exercises.length === 0 
                         ? 'Sin ejercicios' 
                         : `${routine.exercises.length} ejercicio${routine.exercises.length > 1 ? 's' : ''}`
@@ -603,11 +603,11 @@ export const RoutinesView: React.FC = () => {
       {showCreateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/75 backdrop-blur-xl animate-fade-in">
           <div className="absolute inset-0" onClick={() => { setShowCreateModal(false); setNewRoutineName(''); }}></div>
-          <div className="relative bg-[#070b08]/95 border border-emerald-500/10 rounded-[32px] p-6 max-w-sm w-full shadow-2xl shadow-emerald-950/20 flex flex-col gap-4 animate-scale-in">
+          <div className="relative bg-[#1E1E1E] border border-white/10 rounded-xl p-6 max-w-sm w-full shadow-2xl flex flex-col gap-4 animate-scale-in">
             <div>
-              <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest pl-0.5">Nueva Plantilla</span>
-              <h3 className="text-sm font-black text-white mt-0.5">Crear Nueva Rutina</h3>
-              <p className="text-xs text-slate-400 mt-1">Escribe el nombre de tu rutina de entrenamiento.</p>
+              <span className="text-[10px] text-[#A3FF47] font-black uppercase tracking-widest pl-0.5">NUEVA PLANTILLA</span>
+              <h3 className="text-sm font-black text-white uppercase tracking-wider mt-0.5">Crear Nueva Rutina</h3>
+              <p className="text-xs text-[#A0A0A0] mt-1">Escribe el nombre de tu rutina de entrenamiento.</p>
             </div>
 
             <form onSubmit={handleCreateRoutine} className="flex flex-col gap-4">
@@ -616,7 +616,7 @@ export const RoutinesView: React.FC = () => {
                 value={newRoutineName}
                 onChange={(e) => setNewRoutineName(e.target.value)}
                 placeholder="Ej. Pecho y Tríceps, Piernas, etc."
-                className="w-full bg-[#030604] border border-white/5 focus:border-emerald-500/50 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-600 focus:outline-none transition-all font-semibold"
+                className="w-full bg-[#121212] border border-white/5 focus:border-[#A3FF47] rounded-xl px-4 py-3 text-xs text-white placeholder-neutral-700 focus:outline-none transition-all font-semibold"
                 maxLength={30}
                 required
                 autoFocus

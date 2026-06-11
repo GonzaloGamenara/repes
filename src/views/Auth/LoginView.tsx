@@ -46,39 +46,38 @@ export const LoginView: React.FC = () => {
     <div className="flex-1 flex flex-col justify-center px-4 py-4 sm:py-10 relative">
       
       {/* Background Decorative Glowing Elements */}
-      <div className="absolute top-[15%] left-[-15%] w-[350px] h-[350px] rounded-full bg-emerald-950/20 blur-[100px] pointer-events-none animate-pulse-slow"></div>
-      <div className="absolute bottom-[15%] right-[-15%] w-[350px] h-[350px] rounded-full bg-teal-950/15 blur-[100px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '-4s' }}></div>
+      <div className="absolute top-[15%] left-[-15%] w-[350px] h-[350px] rounded-full bg-[#A3FF47]/5 blur-[100px] pointer-events-none animate-pulse-slow"></div>
+      <div className="absolute bottom-[15%] right-[-15%] w-[350px] h-[350px] rounded-full bg-[#A3FF47]/2 blur-[100px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '-4s' }}></div>
  
       <div className="max-w-md w-full mx-auto relative z-10 flex flex-col gap-4 sm:gap-6 animate-scale-in">
         
         {/* App Logo & Title */}
         <div className="text-center flex flex-col items-center gap-3 sm:gap-4">
-          <div className="relative flex items-center justify-center w-14 h-14 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 p-[1.5px] shadow-2xl shadow-emerald-950/50">
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 opacity-40 blur-lg"></div>
-            <div className="w-full h-full rounded-[14px] bg-[#020503] flex items-center justify-center z-10 text-2xl sm:text-3xl font-black text-emerald-400 font-mono tracking-tighter">
-              rp
+          <div className="relative flex items-center justify-center w-14 h-14 sm:w-20 sm:h-20 rounded-xl bg-[#A3FF47] p-[1.5px] shadow-2xl shadow-[#A3FF47]/5">
+            <div className="w-full h-full rounded-[10px] bg-[#121212] flex items-center justify-center z-10 text-2xl sm:text-3xl font-black text-[#A3FF47] font-mono tracking-tighter">
+              RP
             </div>
           </div>
           <div className="flex flex-col gap-1">
-            <h1 className="text-3xl sm:text-4xl font-black tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
-              repes
+            <h1 className="text-3xl sm:text-4xl font-black tracking-widest text-white uppercase font-display">
+              REPES
             </h1>
-            <p className="text-[10px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider">
-              Sobrecarga Progresiva Ágil
+            <p className="text-[10px] sm:text-xs text-[#A0A0A0] font-black uppercase tracking-widest">
+              SOBRECARGA PROGRESIVA ÁGIL
             </p>
           </div>
-          <p className="text-[11px] sm:text-xs text-slate-400 font-medium max-w-xs leading-relaxed mt-0.5">
+          <p className="text-[11px] sm:text-xs text-[#A0A0A0] font-medium max-w-xs leading-relaxed mt-0.5">
             Reemplazá las notas de WhatsApp al entrenar y trackeá tus pesos en tiempo real con Supabase.
           </p>
         </div>
  
         {/* Login Card */}
-        <div className="bg-[#0b100c]/80 border border-white/10 rounded-[24px] sm:rounded-[32px] p-5 sm:p-7 shadow-2xl flex flex-col gap-4 sm:gap-6 backdrop-blur-md">
+        <div className="bg-[#1E1E1E] border border-white/10 rounded-xl p-5 sm:p-7 shadow-2xl flex flex-col gap-4 sm:gap-6">
           <div>
-            <h2 className="text-base sm:text-lg font-black text-white tracking-tight">
+            <h2 className="text-base sm:text-lg font-black text-white uppercase tracking-wider">
               {isSignUp ? 'Crear cuenta nueva' : 'Comenzar a entrenar'}
             </h2>
-            <p className="text-[11px] sm:text-xs text-slate-400 mt-0.5 font-medium leading-normal">
+            <p className="text-[11px] sm:text-xs text-[#A0A0A0] mt-0.5 font-medium leading-normal">
               {isSignUp ? 'Registrate con tu email para persistir tus datos.' : 'Ingresá con tus credenciales de Supabase.'}
             </p>
           </div>
@@ -90,7 +89,7 @@ export const LoginView: React.FC = () => {
             </div>
           )}
           {successMsg && (
-            <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-[11px] sm:text-xs font-semibold text-emerald-400 text-center leading-relaxed">
+            <div className="p-3 rounded-xl bg-[#A3FF47]/10 border border-[#A3FF47]/20 text-[11px] sm:text-xs font-semibold text-[#A3FF47] text-center leading-relaxed">
               ✅ {successMsg}
             </div>
           )}
@@ -98,7 +97,7 @@ export const LoginView: React.FC = () => {
           <form onSubmit={handleSubmit} className="flex flex-col gap-3.5 sm:gap-4.5">
             {/* Email field */}
             <div className="flex flex-col gap-1">
-              <label htmlFor="email-input" className="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">
+              <label htmlFor="email-input" className="text-[9px] sm:text-[10px] font-black text-[#A0A0A0] uppercase tracking-widest pl-1">
                 Correo Electrónico
               </label>
               <input
@@ -107,7 +106,7 @@ export const LoginView: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="ejemplo@gimnasio.com"
-                className="w-full bg-[#030603] border border-white/5 focus:border-emerald-500/50 rounded-xl px-4 py-2.5 sm:py-3.5 text-xs sm:text-sm text-white placeholder-slate-600 focus:outline-none transition-all duration-300 font-semibold shadow-inner"
+                className="w-full bg-transparent border-b border-white/10 focus:border-[#A3FF47] px-2 py-2.5 sm:py-3 text-xs sm:text-sm text-white placeholder-neutral-700 focus:outline-none transition-all duration-300 font-semibold rounded-none"
                 required
                 style={{ touchAction: 'manipulation' }}
               />
@@ -115,7 +114,7 @@ export const LoginView: React.FC = () => {
  
             {/* Password field */}
             <div className="flex flex-col gap-1">
-              <label htmlFor="password-input" className="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">
+              <label htmlFor="password-input" className="text-[9px] sm:text-[10px] font-black text-[#A0A0A0] uppercase tracking-widest pl-1">
                 Contraseña
               </label>
               <div className="relative w-full">
@@ -125,14 +124,14 @@ export const LoginView: React.FC = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-[#030603] border border-white/5 focus:border-emerald-500/50 rounded-xl pl-4 pr-12 py-2.5 sm:py-3.5 text-xs sm:text-sm text-white placeholder-slate-600 focus:outline-none transition-all duration-300 font-semibold shadow-inner"
+                  className="w-full bg-transparent border-b border-white/10 focus:border-[#A3FF47] pl-2 pr-12 py-2.5 sm:py-3 text-xs sm:text-sm text-white placeholder-neutral-700 focus:outline-none transition-all duration-300 font-semibold rounded-none"
                   required
                   style={{ touchAction: 'manipulation' }}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors duration-200 p-1"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A0A0A0] hover:text-white transition-colors duration-200 p-1"
                   style={{ touchAction: 'manipulation' }}
                 >
                   {showPassword ? (
@@ -154,11 +153,11 @@ export const LoginView: React.FC = () => {
               variant="primary"
               size="full"
               disabled={loading}
-              className="mt-2 sm:mt-3.5 py-3 sm:py-4"
+              className="mt-2 sm:mt-3.5 py-3.5 sm:py-4"
             >
               {loading ? (
                 <span className="flex items-center gap-2">
-                  <svg className="animate-spin h-4 w-4 text-slate-950" viewBox="0 0 24 24" fill="none">
+                  <svg className="animate-spin h-4 w-4 text-[#121212]" viewBox="0 0 24 24" fill="none">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
@@ -180,7 +179,7 @@ export const LoginView: React.FC = () => {
                 setErrorMsg(null);
                 setSuccessMsg(null);
               }}
-              className="text-[11px] sm:text-xs font-black text-emerald-400 hover:text-emerald-300 underline underline-offset-4 decoration-emerald-400/30 decoration-2 transition-colors duration-200"
+              className="text-[11px] sm:text-xs font-black text-[#A3FF47] hover:text-[#b5ff66] underline underline-offset-4 decoration-[#A3FF47]/30 decoration-2 transition-colors duration-200 uppercase tracking-wider"
               style={{ touchAction: 'manipulation' }}
             >
               {isSignUp ? '¿Ya tenés cuenta? Iniciar Sesión' : '¿No tenés cuenta? Registrarse'}
@@ -189,17 +188,17 @@ export const LoginView: React.FC = () => {
         </div>
  
         {/* Benefits banner */}
-        <div className="hidden sm:grid grid-cols-3 gap-3 text-center text-[10px] font-black uppercase tracking-wider text-slate-500 mt-2 select-none">
-          <div className="flex flex-col gap-1.5 bg-emerald-950/5 border border-white/5 rounded-2xl p-3 shadow-md hover:border-emerald-500/10 transition-all duration-300">
-            <span className="text-emerald-400 text-lg">⚡</span>
+        <div className="hidden sm:grid grid-cols-3 gap-3 text-center text-[10px] font-black uppercase tracking-wider text-[#A0A0A0] mt-2 select-none">
+          <div className="flex flex-col gap-1.5 bg-[#1E1E1E] border border-white/5 rounded-xl p-3 shadow-md hover:border-[#A3FF47]/20 transition-all duration-300">
+            <span className="text-[#A3FF47] text-lg">⚡</span>
             <span>Ágil y Rápido</span>
           </div>
-          <div className="flex flex-col gap-1.5 bg-emerald-950/5 border border-white/5 rounded-2xl p-3 shadow-md hover:border-emerald-500/10 transition-all duration-300">
-            <span className="text-emerald-400 text-lg">📈</span>
+          <div className="flex flex-col gap-1.5 bg-[#1E1E1E] border border-white/5 rounded-xl p-3 shadow-md hover:border-[#A3FF47]/20 transition-all duration-300">
+            <span className="text-[#A3FF47] text-lg">📈</span>
             <span>Sobrecarga</span>
           </div>
-          <div className="flex flex-col gap-1.5 bg-emerald-950/5 border border-white/5 rounded-2xl p-3 shadow-md hover:border-emerald-500/10 transition-all duration-300">
-            <span className="text-emerald-400 text-lg">🔒</span>
+          <div className="flex flex-col gap-1.5 bg-[#1E1E1E] border border-white/5 rounded-xl p-3 shadow-md hover:border-[#A3FF47]/20 transition-all duration-300">
+            <span className="text-[#A3FF47] text-lg">🔒</span>
             <span>PostgreSQL</span>
           </div>
         </div>

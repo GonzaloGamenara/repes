@@ -12,23 +12,23 @@ function AppContent() {
   const { activeView, setActiveView, activeSession, streakDays, user } = useWorkout();
 
   return (
-    <div className="relative h-dvh max-h-dvh bg-[#030704] text-slate-100 flex flex-col font-sans selection:bg-emerald-500/30 selection:text-emerald-200 overflow-hidden">
+    <div className="relative h-dvh max-h-dvh bg-[#121212] text-slate-100 flex flex-col font-sans selection:bg-[#A3FF47]/30 selection:text-white overflow-hidden">
       
       {/* Background Decorator Glows */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[30%] rounded-full bg-emerald-950/15 blur-[100px] animate-pulse-slow"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[30%] rounded-full bg-teal-950/10 blur-[100px] animate-pulse-slow" style={{ animationDelay: '-4s' }}></div>
+        <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[30%] rounded-full bg-[#A3FF47]/5 blur-[100px] animate-pulse-slow"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[30%] rounded-full bg-[#A3FF47]/2 blur-[100px] animate-pulse-slow" style={{ animationDelay: '-4s' }}></div>
       </div>
 
       {/* Sticky iOS Header with Safe Area Space */}
       {activeView !== 'auth' && (
-        <header className="sticky top-0 z-30 w-full border-b border-white/5 backdrop-blur-md bg-[#020503]/50 pt-safe px-4 pb-3 flex items-center justify-between">
+        <header className="sticky top-0 z-30 w-full border-b border-white/5 backdrop-blur-md bg-[#121212]/50 pt-safe px-4 pb-3 flex items-center justify-between">
           <div className="flex items-center gap-2 mt-2">
-            <div className="relative w-8 h-8 rounded-lg bg-gradient-to-tr from-emerald-500 to-teal-400 p-[1px] flex items-center justify-center shadow-lg shadow-emerald-500/10">
-              <span className="font-mono font-black text-xs text-[#020503]">rp</span>
+            <div className="relative w-8 h-8 rounded-lg bg-[#A3FF47] p-[1px] flex items-center justify-center shadow-lg shadow-[#A3FF47]/10">
+              <span className="font-mono font-black text-xs text-[#121212]">RP</span>
             </div>
-            <span className="font-display font-extrabold text-base tracking-tight text-white">
-              repes
+            <span className="font-display font-black text-sm tracking-widest text-white uppercase">
+              REPES
             </span>
           </div>
           
@@ -63,7 +63,7 @@ function AppContent() {
 
       {/* Frosted iOS Bottom Tab Bar (Suspended Glass Design) */}
       {activeView !== 'auth' && (
-        <nav className="fixed bottom-[calc(env(safe-area-inset-bottom)+12px)] left-4 right-4 z-40 bg-[#090f0b]/90 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl px-2 py-2 flex items-center justify-around select-none">
+        <nav className="fixed bottom-[calc(env(safe-area-inset-bottom)+12px)] left-4 right-4 z-40 bg-[#1E1E1E]/95 border border-white/10 rounded-xl shadow-2xl backdrop-blur-xl px-2 py-2 flex items-center justify-around select-none">
           {/* Tab 1: Planner */}
           <button
             onClick={() => setActiveView('planner')}
