@@ -4,6 +4,7 @@ import PlannerView from './views/Planner/PlannerView';
 import WorkoutView from './views/Workout/WorkoutView';
 import RoutinesView from './views/Routines/RoutinesView';
 import ProfileView from './views/Profile/ProfileView';
+import NutritionView from './views/Nutrition/NutritionView';
 import RestTimer from './components/RestTimer';
 import SetBottomSheet from './views/Tracking/SetBottomSheet';
 import ExerciseFocusModal from './components/ExerciseFocusModal';
@@ -59,6 +60,7 @@ function AppContent() {
         {activeView === 'routines' && <RoutinesView />}
         {activeView === 'workout' && <WorkoutView />}
         {activeView === 'profile' && <ProfileView />}
+        {activeView === 'nutrition' && <NutritionView />}
       </main>
 
       {/* Frosted iOS Bottom Tab Bar (Suspended Glass Design) */}
@@ -120,7 +122,21 @@ function AppContent() {
             <span className="text-[9px] uppercase tracking-wider font-black">Gimnasio</span>
           </button>
 
-          {/* Tab 4: Profile */}
+          {/* Tab 4: Nutrition */}
+          <button
+            onClick={() => setActiveView('nutrition')}
+            className={`flex flex-col items-center gap-1 py-1.5 px-3 rounded-xl transition-all duration-300 active:scale-95 ${
+              activeView === 'nutrition' 
+                ? 'bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/15' 
+                : 'text-slate-400 hover:text-slate-200 border border-transparent'
+            }`}
+            style={{ touchAction: 'manipulation' }}
+          >
+            <span className="text-base leading-none">🥗</span>
+            <span className="text-[9px] uppercase tracking-wider font-black">Nutrición</span>
+          </button>
+
+          {/* Tab 5: Profile */}
           <button
             onClick={() => setActiveView('profile')}
             className={`flex flex-col items-center gap-1 py-1.5 px-3 rounded-xl transition-all duration-300 active:scale-95 ${

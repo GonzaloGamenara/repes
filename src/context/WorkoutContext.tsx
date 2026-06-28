@@ -40,7 +40,7 @@ export interface WorkoutSession {
   isFinished: boolean;
 }
 
-type ActiveView = 'auth' | 'planner' | 'workout' | 'routines' | 'profile';
+type ActiveView = 'auth' | 'planner' | 'workout' | 'routines' | 'profile' | 'nutrition';
 
 interface WorkoutContextType {
   activeView: ActiveView;
