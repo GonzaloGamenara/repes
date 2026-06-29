@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 import type { User } from '@supabase/supabase-js';
 
@@ -122,6 +122,10 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
   const [totalRestTime, setTotalRestTime] = useState<number>(90); // default 90s
   const [restEndTime, setRestEndTime] = useState<number | null>(null);
+
+  // Silent audio trick refs to prevent background suspension
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const silentSourceRef = useRef<AudioBufferSourceNode | null>(null);
 
   // Global Focus Exercise Viewer Modal
   const [focusedExercise, setFocusedExercise] = useState<any | null>(null);
@@ -349,6 +353,77 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
     return streak;
   };
 
+  const startSilentAudio = () => {
+    try {
+      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioContextClass) return;
+
+      const ctx = new AudioContextClass();
+      audioCtxRef.current = ctx;
+
+      // Generate a 1-second silent buffer
+      const buffer = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
+      const channelData = buffer.getChannelData(0);
+      for (let i = 0; i < buffer.length; i++) {
+        channelData[i] = 0;
+      }
+
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+      source.loop = true;
+      source.connect(ctx.destination);
+      source.start(0);
+      silentSourceRef.current = source;
+    } catch (err) {
+      console.error('Error starting silent background audio:', err);
+    }
+  };
+
+  const stopSilentAudio = () => {
+    try {
+      if (silentSourceRef.current) {
+        silentSourceRef.current.stop();
+        silentSourceRef.current.disconnect();
+        silentSourceRef.current = null;
+      }
+      if (audioCtxRef.current) {
+        audioCtxRef.current.close();
+        audioCtxRef.current = null;
+      }
+    } catch (err) {
+      console.error('Error stopping silent background audio:', err);
+    }
+  };
+
+  const playBeep = () => {
+    try {
+      const ctx = audioCtxRef.current;
+      if (!ctx) return;
+
+      if (ctx.state === 'suspended') {
+        ctx.resume();
+      }
+
+      const osc = ctx.createOscillator();
+      const gainNode = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(880, ctx.currentTime);
+
+      gainNode.gain.setValueAtTime(0, ctx.currentTime);
+      gainNode.gain.linearRampToValueAtTime(0.8, ctx.currentTime + 0.05);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+
+      osc.connect(gainNode);
+      gainNode.connect(ctx.destination);
+
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.8);
+    } catch (err) {
+      console.error('Error playing beep:', err);
+    }
+  };
+
   // Timer interval handling
   useEffect(() => {
     let interval: ReturnType<typeof setInterval> | null = null;
@@ -390,6 +465,14 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
           if ('vibrate' in navigator) {
             navigator.vibrate([200, 100, 200]);
           }
+
+          // Play audio alarm beep
+          playBeep();
+
+          // Stop background silence loop after beep completes
+          setTimeout(() => {
+            stopSilentAudio();
+          }, 1000);
 
           showRestFinishedNotification();
         }
@@ -899,6 +982,9 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   // Rest Timer Actions
   const startRestTimer = (seconds = 90) => {
+    // Start silent audio to keep JS execution alive in background
+    startSilentAudio();
+
     const endTime = Date.now() + seconds * 1000;
     setRestEndTime(endTime);
     setRestTimeRemaining(seconds);
@@ -906,6 +992,7 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const stopRestTimer = () => {
+    stopSilentAudio();
     setIsTimerActive(false);
     setRestEndTime(null);
     setRestTimeRemaining(0);
