@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import type { User } from '@supabase/supabase-js';
 
@@ -121,11 +121,10 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [restTimeRemaining, setRestTimeRemaining] = useState<number>(0);
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
   const [totalRestTime, setTotalRestTime] = useState<number>(90); // default 90s
+  const [restEndTime, setRestEndTime] = useState<number | null>(null);
 
   // Global Focus Exercise Viewer Modal
   const [focusedExercise, setFocusedExercise] = useState<any | null>(null);
-  
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Load user session from Supabase on init
   useEffect(() => {
@@ -144,11 +143,20 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
     });
 
     // 2. Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session?.user) {
         setUser(session.user);
-        fetchRoutinesAndPlanner(session.user.id);
-        setActiveView('planner');
+        // Only redirect and fetch routines if they were on 'auth' (meaning they just signed in)
+        // This avoids resetting their view and showing loading spinners on background token refreshes or metadata updates.
+        if (event === 'SIGNED_IN') {
+          setActiveView(prev => {
+            if (prev === 'auth') {
+              fetchRoutinesAndPlanner(session.user.id);
+              return 'planner';
+            }
+            return prev;
+          });
+        }
       } else {
         setUser(null);
         setRoutines([]);
@@ -343,28 +351,55 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   // Timer interval handling
   useEffect(() => {
-    if (isTimerActive && restTimeRemaining > 0) {
-      timerRef.current = setInterval(() => {
-        setRestTimeRemaining((prev) => {
-          if (prev <= 1) {
-            setIsTimerActive(false);
-            if (timerRef.current) clearInterval(timerRef.current);
-            if ('vibrate' in navigator) {
-              navigator.vibrate([200, 100, 200]);
-            }
-            return 0;
+    let interval: ReturnType<typeof setInterval> | null = null;
+
+    const showRestFinishedNotification = () => {
+      if ('Notification' in window && Notification.permission === 'granted') {
+        const title = '¡Descanso Terminado! 🔥';
+        const options = {
+          body: 'Es hora de tu siguiente serie. ¡A darle!',
+          icon: '/pwa-192x192.png',
+          badge: '/pwa-192x192.png',
+          vibrate: [200, 100, 200],
+          tag: 'rest-timer-notification',
+          renotify: true
+        };
+
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.ready.then((registration) => {
+            registration.showNotification(title, options);
+          }).catch(() => {
+            new Notification(title, options);
+          });
+        } else {
+          new Notification(title, options);
+        }
+      }
+    };
+
+    if (isTimerActive && restEndTime !== null) {
+      interval = setInterval(() => {
+        const remaining = Math.max(0, Math.ceil((restEndTime - Date.now()) / 1000));
+        setRestTimeRemaining(remaining);
+
+        if (remaining <= 0) {
+          setIsTimerActive(false);
+          setRestEndTime(null);
+          if (interval) clearInterval(interval);
+
+          if ('vibrate' in navigator) {
+            navigator.vibrate([200, 100, 200]);
           }
-          return prev - 1;
-        });
-      }, 1000);
-    } else {
-      if (timerRef.current) clearInterval(timerRef.current);
+
+          showRestFinishedNotification();
+        }
+      }, 500);
     }
 
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
+      if (interval) clearInterval(interval);
     };
-  }, [isTimerActive, restTimeRemaining]);
+  }, [isTimerActive, restEndTime]);
 
   const logout = async () => {
     await supabase.auth.signOut();
@@ -440,6 +475,11 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const startWorkout = async (routineIds: string | string[]) => {
+    // Request notification permission right when starting a workout
+    if ('Notification' in window && Notification.permission === 'default') {
+      Notification.requestPermission().catch(console.error);
+    }
+
     const ids = Array.isArray(routineIds) ? routineIds : [routineIds];
     const selectedRoutines = routines.filter((r) => ids.includes(r.id));
     if (selectedRoutines.length === 0) return;
@@ -859,17 +899,26 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   // Rest Timer Actions
   const startRestTimer = (seconds = 90) => {
+    const endTime = Date.now() + seconds * 1000;
+    setRestEndTime(endTime);
     setRestTimeRemaining(seconds);
     setIsTimerActive(true);
   };
 
   const stopRestTimer = () => {
     setIsTimerActive(false);
+    setRestEndTime(null);
     setRestTimeRemaining(0);
   };
 
   const addRestTime = (seconds: number) => {
-    setRestTimeRemaining((prev) => Math.max(0, prev + seconds));
+    if (isTimerActive && restEndTime !== null) {
+      const newEndTime = restEndTime + seconds * 1000;
+      setRestEndTime(newEndTime);
+      setRestTimeRemaining((prev) => Math.max(0, prev + seconds));
+    } else {
+      startRestTimer(seconds);
+    }
   };
 
   return (
